@@ -1,0 +1,44 @@
+# Git
+.git
+.gitignore
+.github
+
+# Documentation
+*.md
+LICENSE.txt
+
+# Development
+.rspec
+.rubocop.yml
+.ruby-version
+.ruby-gemset
+
+# Test and coverage
+spec/
+coverage/
+test/
+
+# IDE and editor files
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Logs and temp files
+log/
+tmp/
+*.log
+
+# Local environment
+.env.local
+.env.*.local
+
+# Docker
+Dockerfile
+docker-compose.yml
+.dockerignore
