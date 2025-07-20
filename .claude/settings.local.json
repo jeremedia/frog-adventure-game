@@ -27,7 +27,12 @@
       "mcp__playwright__playwright_close",
       "Bash(gh pr list:*)",
       "Bash(gh pr view:*)",
-      "Bash(gh pr comment:*)"
+      "Bash(gh pr comment:*)",
+      "Bash(git restore:*)",
+      "Bash(gh pr create:*)",
+      "Bash(find:*)",
+      "Bash(gh pr merge:*)",
+      "Bash(git pull:*)"
     ],
     "deny": []
   }
