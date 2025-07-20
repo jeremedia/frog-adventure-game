@@ -38,7 +38,7 @@ Gem::Specification.new do |spec|
   spec.add_dependency "sinatra-contrib", "~> 4.0"
   spec.add_dependency "rackup", "~> 2.1"
   spec.add_dependency "puma", "~> 6.4"
-  spec.add_dependency "ruby_llm", "~> 0.1"
+  spec.add_dependency "ruby_llm", "~> 1.3"
   spec.add_dependency "redis", "~> 5.0"
   spec.add_dependency "json", "~> 2.7"
   spec.add_dependency "dotenv", "~> 3.1"

@@ -3,11 +3,13 @@
 This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
 
 ## Project Overview
-Frog Adventure Web - Converting the Python CLI game into a Ruby gem-based web application using Sinatra and rubyllm for dynamic AI-powered adventures.
+Frog Adventure Web - A Ruby gem-based roguelike web application where frog companion stats dramatically change adventures, transforming gameplay into AI-generated cartoons.
+
+**Game Concept**: This is a roguelike where the stats and abilities of your companion frog dramatically change the adventure. When the adventure completes, the game's series of steps is turned into a text narrative → storyboard → screenplay → cartoon via language model interactions.
 
 **GitHub Project Board**: https://github.com/users/jeremedia/projects/3
 
-**Current Status**: Architecture and planning phase - 25 issues created across 5 development phases.
+**Current Status**: Phase 2.5 implementation - Enhanced frog generation and narrative pipeline development (48 total issues).
 
 ## Development Commands
 
@@ -52,6 +54,20 @@ bundle exec rubocop
 4. **Environment-based Configuration**: API key from `OPENAI_API_KEY` environment variable
 
 ### Data Models
+
+#### Roguelike Core
+- **Frog Companions**: Procedurally generated with stats that affect adventure mechanics
+- **Adventure System**: Turn-based encounters with choices influenced by frog abilities
+- **Progression**: Adventures unlock new regions and companion types
+
+#### Narrative Generation Pipeline
+- **Adventure Log**: Records player choices, outcomes, and story beats during gameplay
+- **Text Narrative**: AI transforms adventure log into coherent story prose
+- **Storyboard**: Converts narrative into visual scene descriptions
+- **Screenplay**: Formats scenes into dialogue and action sequences
+- **Cartoon Generation**: Produces final animated content from screenplay
+
+#### Legacy Data Models (Python)
 - `FrogDifficulty` (Enum): TINY, SMALL, MEDIUM, LARGE, GIANT
 - `FrogPersonality` (Enum): FRIENDLY, NEUTRAL, GRUMPY, MYSTERIOUS
 - `Frog` (dataclass): Core frog attributes including AI-generated descriptions
