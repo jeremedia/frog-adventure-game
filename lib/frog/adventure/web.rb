@@ -10,6 +10,7 @@ require_relative "web/game_event_system"
 require_relative "web/game_engine"
 require_relative "web/llm_client"
 require_relative "web/middleware"
+require_relative "web/adventure_log"
 
 module Frog
   module Adventure
