@@ -1,0 +1,35 @@
+name: Feature Implementation
+description: New feature or component
+title: "[FEATURE] "
+labels: ["feature", "needs-analysis"]
+body:
+  - type: textarea
+    id: description
+    attributes:
+      label: Feature Description
+      description: What feature needs to be implemented?
+    validations:
+      required: true
+  - type: textarea
+    id: dependencies
+    attributes:
+      label: Dependencies
+      description: List any issues that must be completed first
+      placeholder: "Depends on: #123, #456"
+  - type: textarea
+    id: acceptance
+    attributes:
+      label: Acceptance Criteria
+      description: How do we know when this is complete?
+      value: |
+        - [ ] Criteria 1
+        - [ ] Criteria 2
+  - type: dropdown
+    id: complexity
+    attributes:
+      label: Complexity
+      options:
+        - Small (< 2 hours)
+        - Medium (2-4 hours)
+        - Large (4-8 hours)
+        - Epic (needs breakdown)
