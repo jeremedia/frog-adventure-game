@@ -104,6 +104,13 @@ class FrogAdventureGame {
 
     // Show the frog card
     this.showFrogDisplay();
+    
+    // Show Start Adventure button
+    const startButton = document.getElementById('start-game');
+    if (startButton) {
+      startButton.style.display = 'block';
+      startButton.style.marginTop = '2rem';
+    }
   }
 
   updateStats(stats) {
@@ -205,28 +212,16 @@ class FrogAdventureGame {
   }
 
   async startNewGame() {
-    try {
-      const response = await fetch('/api/game/new', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({
-          title: 'My Frog Adventure'
-        })
-      });
-
-      const result = await response.json();
-      
-      if (result.status === 'success') {
-        console.log('New game created:', result.game_id);
-        // Redirect to game or update UI
-      } else {
-        console.error('Failed to create game:', result.message);
-      }
-    } catch (error) {
-      console.error('Error starting new game:', error);
+    if (!this.currentFrog) {
+      this.showError('Please generate a frog first!');
+      return;
     }
+    
+    // Save current frog to localStorage
+    localStorage.setItem('currentFrog', JSON.stringify(this.currentFrog));
+    
+    // Navigate to game page
+    window.location.href = '/game';
   }
 
   async loadGame(gameId) {

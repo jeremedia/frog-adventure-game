@@ -24,6 +24,12 @@ module Frog
               erb :how_to_play
             end
             
+            # Game page (main game UI)
+            get "/game" do
+              @title = "Frog Adventure - Game"
+              erb :game
+            end
+            
             # Game routes
             namespace "/game" do
               # New game page

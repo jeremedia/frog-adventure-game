@@ -1,0 +1,503 @@
+/* Game UI Styles */
+
+/* Game Container */
+.game-container {
+  min-height: 100vh;
+  background: linear-gradient(to bottom, #1e3a8a, #1e1b4b);
+  color: white;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Game Header */
+.game-header {
+  background: rgba(0, 0, 0, 0.3);
+  padding: 1rem;
+  border-bottom: 2px solid rgba(255, 255, 255, 0.1);
+}
+
+/* Status Bar */
+.status-bar {
+  display: flex;
+  gap: 2rem;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.status-item {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.status-icon {
+  font-size: 1.5rem;
+}
+
+.status-label {
+  font-weight: 600;
+  min-width: 80px;
+}
+
+.status-bar-container {
+  width: 150px;
+  height: 20px;
+  background: rgba(0, 0, 0, 0.5);
+  border-radius: 10px;
+  overflow: hidden;
+  position: relative;
+}
+
+.status-bar-fill {
+  height: 100%;
+  transition: width 0.3s ease;
+  position: relative;
+}
+
+.status-bar-fill::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(to bottom, rgba(255, 255, 255, 0.3), transparent);
+}
+
+.status-bar-fill.energy {
+  background: linear-gradient(to right, #fbbf24, #f59e0b);
+}
+
+.status-bar-fill.happiness {
+  background: linear-gradient(to right, #34d399, #10b981);
+}
+
+.status-value {
+  font-weight: bold;
+  min-width: 60px;
+  text-align: right;
+}
+
+/* Main Game Area */
+.game-main {
+  flex: 1;
+  display: grid;
+  grid-template-columns: 300px 1fr 300px;
+  gap: 1rem;
+  padding: 1rem;
+  max-width: 1400px;
+  margin: 0 auto;
+  width: 100%;
+}
+
+.game-panel {
+  background: rgba(0, 0, 0, 0.2);
+  border-radius: 12px;
+  padding: 1rem;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+/* Frog Card (Game Version) */
+.frog-card-game {
+  background: linear-gradient(135deg, #1e293b, #334155);
+  border-radius: 12px;
+  padding: 1rem;
+  margin-bottom: 1rem;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+  animation: slideIn 0.5s ease-out;
+}
+
+.frog-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+.frog-card-header h3 {
+  margin: 0;
+  color: #fbbf24;
+}
+
+.frog-avatar {
+  text-align: center;
+  margin: 1rem 0;
+}
+
+.frog-emoji {
+  font-size: 4rem;
+  animation: float 3s ease-in-out infinite;
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-10px); }
+}
+
+.frog-stats-compact {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 0.5rem;
+  margin: 1rem 0;
+}
+
+.stat-compact {
+  text-align: center;
+  background: rgba(0, 0, 0, 0.3);
+  padding: 0.5rem;
+  border-radius: 8px;
+}
+
+.stat-compact .stat-icon {
+  display: block;
+  font-size: 1.25rem;
+  margin-bottom: 0.25rem;
+}
+
+.stat-compact .stat-value {
+  font-weight: bold;
+  font-size: 1.25rem;
+}
+
+.frog-ability-compact {
+  text-align: center;
+  background: rgba(99, 102, 241, 0.2);
+  padding: 0.5rem;
+  border-radius: 8px;
+  border: 1px solid rgba(99, 102, 241, 0.5);
+}
+
+.ability-label {
+  font-weight: 600;
+  margin-right: 0.5rem;
+}
+
+.ability-text {
+  color: #c7d2fe;
+}
+
+/* Inventory Panel */
+.inventory-panel {
+  margin-top: 1rem;
+}
+
+.inventory-panel h4 {
+  margin: 0 0 1rem 0;
+  color: #fbbf24;
+}
+
+.inventory-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 0.5rem;
+}
+
+.inventory-item {
+  aspect-ratio: 1;
+  background: rgba(0, 0, 0, 0.3);
+  border: 2px solid rgba(255, 255, 255, 0.1);
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.5rem;
+  cursor: pointer;
+  transition: all 0.2s;
+  position: relative;
+}
+
+.inventory-item:hover {
+  background: rgba(255, 255, 255, 0.1);
+  border-color: rgba(255, 255, 255, 0.3);
+  transform: scale(1.05);
+}
+
+.inventory-item .item-count {
+  position: absolute;
+  bottom: 2px;
+  right: 4px;
+  font-size: 0.75rem;
+  background: rgba(0, 0, 0, 0.8);
+  padding: 2px 4px;
+  border-radius: 4px;
+}
+
+/* Adventure Display */
+.adventure-display {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.scenario-container {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+#scenario-title {
+  color: #fbbf24;
+  text-align: center;
+  margin: 0 0 1rem 0;
+}
+
+.scenario-text {
+  flex: 1;
+  font-size: 1.125rem;
+  line-height: 1.8;
+  animation: fadeIn 0.5s ease-out;
+}
+
+.scenario-image {
+  margin: 1rem 0;
+  text-align: center;
+}
+
+.placeholder-image {
+  font-size: 3rem;
+  padding: 2rem;
+  background: rgba(0, 0, 0, 0.2);
+  border-radius: 12px;
+  display: inline-block;
+}
+
+/* Choice Buttons */
+.choices-container {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  margin-top: 1rem;
+}
+
+.choice-button {
+  background: linear-gradient(135deg, #4f46e5, #6366f1);
+  color: white;
+  border: none;
+  padding: 1rem 1.5rem;
+  border-radius: 8px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s;
+  position: relative;
+  overflow: hidden;
+}
+
+.choice-button::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: rgba(255, 255, 255, 0.2);
+  transition: left 0.3s;
+}
+
+.choice-button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(99, 102, 241, 0.4);
+}
+
+.choice-button:hover::before {
+  left: 100%;
+}
+
+.choice-button.primary {
+  background: linear-gradient(135deg, #10b981, #34d399);
+}
+
+.choice-button:disabled {
+  background: linear-gradient(135deg, #4b5563, #6b7280);
+  cursor: not-allowed;
+  opacity: 0.7;
+}
+
+/* Adventure Log */
+.adventure-log {
+  height: 400px;
+  display: flex;
+  flex-direction: column;
+}
+
+.adventure-log h4 {
+  margin: 0 0 1rem 0;
+  color: #fbbf24;
+}
+
+.log-entries {
+  flex: 1;
+  overflow-y: auto;
+  background: rgba(0, 0, 0, 0.2);
+  border-radius: 8px;
+  padding: 0.5rem;
+}
+
+.log-entry {
+  display: flex;
+  gap: 0.5rem;
+  margin-bottom: 0.5rem;
+  padding: 0.5rem;
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 4px;
+  animation: slideInRight 0.3s ease-out;
+}
+
+.log-time {
+  color: #9ca3af;
+  font-size: 0.875rem;
+  min-width: 50px;
+}
+
+.log-text {
+  flex: 1;
+}
+
+/* Quick Actions */
+.quick-actions {
+  margin-top: 1rem;
+  display: flex;
+  gap: 0.5rem;
+  justify-content: center;
+}
+
+.quick-action-btn {
+  background: rgba(0, 0, 0, 0.3);
+  color: white;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  padding: 0.75rem 1rem;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.2s;
+  font-size: 0.875rem;
+}
+
+.quick-action-btn:hover {
+  background: rgba(255, 255, 255, 0.1);
+  border-color: rgba(255, 255, 255, 0.4);
+  transform: scale(1.05);
+}
+
+/* Modal */
+.modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.8);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+.modal.hidden {
+  display: none;
+}
+
+.modal-content {
+  background: linear-gradient(135deg, #1e293b, #334155);
+  padding: 2rem;
+  border-radius: 16px;
+  border: 2px solid rgba(255, 255, 255, 0.2);
+  text-align: center;
+  max-width: 400px;
+  animation: modalPop 0.3s ease-out;
+}
+
+@keyframes modalPop {
+  0% { transform: scale(0.8); opacity: 0; }
+  100% { transform: scale(1); opacity: 1; }
+}
+
+.modal-content h2 {
+  color: #fbbf24;
+  margin: 0 0 1rem 0;
+}
+
+.modal-actions {
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+  margin-top: 1.5rem;
+}
+
+/* Animations */
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateX(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes slideInRight {
+  from {
+    opacity: 0;
+    transform: translateX(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+/* Responsive Design */
+@media (max-width: 1200px) {
+  .game-main {
+    grid-template-columns: 250px 1fr 250px;
+  }
+}
+
+@media (max-width: 1024px) {
+  .game-main {
+    grid-template-columns: 1fr;
+    grid-template-rows: auto 1fr auto;
+  }
+  
+  .left-panel {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+  }
+  
+  .right-panel {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: 1rem;
+  }
+  
+  .adventure-log {
+    height: 200px;
+  }
+}
+
+@media (max-width: 640px) {
+  .status-bar {
+    flex-direction: column;
+    gap: 1rem;
+  }
+  
+  .left-panel,
+  .right-panel {
+    grid-template-columns: 1fr;
+  }
+  
+  .frog-stats-compact {
+    grid-template-columns: repeat(3, 1fr);
+  }
+  
+  .inventory-grid {
+    grid-template-columns: repeat(6, 1fr);
+  }
+}

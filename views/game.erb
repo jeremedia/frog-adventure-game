@@ -1,0 +1,145 @@
+<div class="game-container">
+  <!-- Game Header with Status Bar -->
+  <div class="game-header">
+    <div class="status-bar">
+      <div class="status-item">
+        <span class="status-icon">⚡</span>
+        <span class="status-label">Energy</span>
+        <div class="status-bar-container">
+          <div id="energy-bar" class="status-bar-fill energy" style="width: 100%"></div>
+        </div>
+        <span id="energy-value" class="status-value">100/100</span>
+      </div>
+      
+      <div class="status-item">
+        <span class="status-icon">😊</span>
+        <span class="status-label">Happiness</span>
+        <div class="status-bar-container">
+          <div id="happiness-bar" class="status-bar-fill happiness" style="width: 75%"></div>
+        </div>
+        <span id="happiness-value" class="status-value">75/100</span>
+      </div>
+      
+      <div class="status-item">
+        <span class="status-icon">🎯</span>
+        <span class="status-label">Adventures</span>
+        <span id="adventure-count" class="status-value">0</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Main Game Area -->
+  <div class="game-main">
+    <!-- Left Panel: Frog Card -->
+    <div class="game-panel left-panel">
+      <div id="frog-card" class="frog-card-game">
+        <div class="frog-card-header">
+          <h3 id="game-frog-name">Your Frog</h3>
+          <span id="game-frog-type" class="frog-type-badge">Type</span>
+        </div>
+        
+        <div class="frog-card-body">
+          <div class="frog-avatar">
+            <div class="frog-emoji">🐸</div>
+          </div>
+          
+          <div class="frog-stats-compact">
+            <div class="stat-compact">
+              <span class="stat-icon">💪</span>
+              <span id="game-strength" class="stat-value">0</span>
+            </div>
+            <div class="stat-compact">
+              <span class="stat-icon">🏃</span>
+              <span id="game-agility" class="stat-value">0</span>
+            </div>
+            <div class="stat-compact">
+              <span class="stat-icon">🧠</span>
+              <span id="game-intelligence" class="stat-value">0</span>
+            </div>
+            <div class="stat-compact">
+              <span class="stat-icon">✨</span>
+              <span id="game-magic" class="stat-value">0</span>
+            </div>
+            <div class="stat-compact">
+              <span class="stat-icon">🍀</span>
+              <span id="game-luck" class="stat-value">0</span>
+            </div>
+          </div>
+          
+          <div class="frog-ability-compact">
+            <span class="ability-label">Ability:</span>
+            <span id="game-ability" class="ability-text">Unknown</span>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Inventory -->
+      <div id="inventory-panel" class="inventory-panel">
+        <h4>Inventory</h4>
+        <div id="inventory-grid" class="inventory-grid">
+          <!-- Inventory items will be dynamically added here -->
+        </div>
+      </div>
+    </div>
+
+    <!-- Center Panel: Adventure Display -->
+    <div class="game-panel center-panel">
+      <div id="adventure-display" class="adventure-display">
+        <div id="scenario-container" class="scenario-container">
+          <h2 id="scenario-title">Welcome to Frog Adventure!</h2>
+          <div id="scenario-text" class="scenario-text">
+            <p>Your frog companion is ready for adventure! Press the button below to begin your journey.</p>
+          </div>
+          
+          <div id="scenario-image" class="scenario-image">
+            <div class="placeholder-image">🌳🐸🌳</div>
+          </div>
+        </div>
+        
+        <div id="choices-container" class="choices-container">
+          <button id="start-adventure-btn" class="choice-button primary">
+            Begin Adventure
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Right Panel: Adventure Log -->
+    <div class="game-panel right-panel">
+      <div class="adventure-log">
+        <h4>Adventure Log</h4>
+        <div id="log-entries" class="log-entries">
+          <div class="log-entry">
+            <span class="log-time">Now</span>
+            <span class="log-text">Ready to begin your adventure!</span>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Quick Actions -->
+      <div class="quick-actions">
+        <button id="feed-frog" class="quick-action-btn" title="Feed your frog">
+          🍕 Feed
+        </button>
+        <button id="play-frog" class="quick-action-btn" title="Play with your frog">
+          🎮 Play
+        </button>
+        <button id="rest-frog" class="quick-action-btn" title="Rest your frog">
+          😴 Rest
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Game Over Modal -->
+<div id="game-over-modal" class="modal hidden">
+  <div class="modal-content">
+    <h2 id="game-over-title">Game Over</h2>
+    <p id="game-over-message">Your adventure has ended.</p>
+    <div class="modal-actions">
+      <button id="new-game-btn" class="btn btn-primary">New Game</button>
+      <button id="main-menu-btn" class="btn btn-secondary">Main Menu</button>
+    </div>
+  </div>
+</div>
