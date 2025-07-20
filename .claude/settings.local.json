@@ -1,0 +1,16 @@
+{
+  "permissions": {
+    "allow": [
+      "WebFetch(domain:rubyllm.com)",
+      "Bash(gh repo view:*)",
+      "Bash(gh project create:*)",
+      "Bash(gh project delete:*)",
+      "Bash(mkdir:*)",
+      "Bash(gh label:*)",
+      "Bash(gh issue create:*)",
+      "Bash(git add:*)",
+      "Bash(git commit:*)"
+    ],
+    "deny": []
+  }
+}

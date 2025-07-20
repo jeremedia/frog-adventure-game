@@ -1,0 +1,114 @@
+# CLAUDE.md
+
+This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
+
+## Project Overview
+Frog Adventure Web - Converting the Python CLI game into a Ruby gem-based web application using Sinatra and rubyllm for dynamic AI-powered adventures.
+
+**GitHub Project Board**: https://github.com/users/jeremedia/projects/3
+
+**Current Status**: Architecture and planning phase - 25 issues created across 5 development phases.
+
+## Development Commands
+
+### Running the Original Python Game
+```bash
+python3 frog_adventure.py
+```
+
+### Ruby Web Version (In Development)
+```bash
+# Install dependencies
+bundle install
+
+# Run development server
+bundle exec rackup
+
+# Run tests
+bundle exec rspec
+
+# Run linter
+bundle exec rubocop
+```
+
+## Architecture Overview
+
+### Core Components
+- **Main Game Loop** (`frog_adventure.py`): Single-file implementation containing all game logic
+- **AI Integration**: Uses OpenAI API for dynamic frog generation with structured outputs via Pydantic
+- **Fallback System**: Predefined frog data when AI is unavailable
+- **State Management**: JSON-based save/load system for game persistence
+
+### Key Design Patterns
+1. **Structured AI Responses**: Uses Pydantic models (`FrogResponse`) to ensure consistent AI outputs
+2. **Graceful Degradation**: Falls back to predefined frogs when OpenAI API is unavailable
+3. **Energy/Happiness Mechanics**: Virtual pet simulation requiring player interaction
+4. **Environment-based Configuration**: API key from `OPENAI_API_KEY` environment variable
+
+### Data Models
+- `FrogDifficulty` (Enum): TINY, SMALL, MEDIUM, LARGE, GIANT
+- `FrogPersonality` (Enum): FRIENDLY, NEUTRAL, GRUMPY, MYSTERIOUS
+- `Frog` (dataclass): Core frog attributes including AI-generated descriptions
+- `GameState` (dataclass): Player inventory, stats, and current frog
+
+## Important Implementation Details
+- AI generation uses `gpt-4o-mini` model with structured output format
+- Save files stored as `frog_adventure_save.json` in working directory
+- Combat system uses turn-based mechanics with randomized damage
+- Special endings triggered by specific frog combinations
+
+## Multi-Agent Collaboration Protocol
+
+### Starting Work
+1. Check the [Project Board](https://github.com/users/jeremedia/projects/3) for available work
+2. Only claim issues marked `ready-to-work`
+3. Assign yourself and move to "In Progress"
+4. Work on feature branch: `feature/issue-{number}-{description}`
+5. Comment: "🤖 Agent [session-id] starting work"
+
+### Code Standards
+- Use Ruby 3.2+ features
+- Follow Ruby Style Guide
+- Write RSpec tests for all game logic
+- Use YARD documentation for public APIs
+- Commit often with descriptive messages
+
+### LLM Integration Patterns
+- Use rubyllm's streaming for real-time responses
+- Implement exponential backoff for API failures
+- Cache LLM responses with 24-hour TTL
+- Always provide fallback content
+
+### Testing Requirements
+- Unit tests for all game logic (RSpec)
+- Integration tests for API endpoints (Rack::Test)
+- Feature tests for critical paths (Capybara)
+- Minimum 80% code coverage
+
+### Handoff Protocol
+If unable to complete an issue:
+1. Commit all work with detailed message
+2. Update issue with progress and blockers
+3. Document any architectural decisions
+4. Remove self-assignment
+5. Add `help-wanted` label
+
+### Architecture Decisions
+- For major decisions, create ADR issue first
+- Link ADR to implementation issues
+- Update `/docs/architecture/` with decision
+
+### Issue Dependencies
+Check issue descriptions for "Depends on:" references. Do not start work on issues with unmet dependencies.
+
+### Progress Updates
+- Comment on issue every 30 minutes with progress
+- Use task lists in comments to track sub-tasks
+- Update issue description if scope changes
+
+### PR Guidelines
+1. Create draft PR early with issue number in title
+2. Link PR to issue with "Closes #XX"
+3. Ensure all tests pass
+4. Update documentation as needed
+5. Request review when ready

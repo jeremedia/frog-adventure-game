@@ -1,0 +1,26 @@
+name: Architecture Decision
+description: Document an important technical decision
+title: "[ADR] "
+labels: ["adr", "documentation"]
+body:
+  - type: textarea
+    id: context
+    attributes:
+      label: Context
+      description: What is the issue that we're seeing that is motivating this decision?
+    validations:
+      required: true
+  - type: textarea
+    id: decision
+    attributes:
+      label: Decision
+      description: What is the change that we're proposing?
+    validations:
+      required: true
+  - type: textarea
+    id: consequences
+    attributes:
+      label: Consequences
+      description: What becomes easier or harder because of this change?
+    validations:
+      required: true
