@@ -1,0 +1,29 @@
+version: '3.8'
+
+services:
+  web:
+    build: .
+    ports:
+      - "4567:4567"
+    volumes:
+      - .:/app
+      - gem_cache:/usr/local/bundle
+    environment:
+      - REDIS_URL=redis://redis:6379/0
+    depends_on:
+      - redis
+    stdin_open: true
+    tty: true
+    command: bundle exec rackup -o 0.0.0.0 -p 4567
+
+  redis:
+    image: redis:7-alpine
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+    command: redis-server --appendonly yes
+
+volumes:
+  gem_cache:
+  redis_data:
