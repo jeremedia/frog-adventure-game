@@ -159,6 +159,35 @@ module Frog
                 end
               end
               
+              # Frog companion routes
+              namespace "/frog" do
+                # Generate random frog companion
+                post "/generate" do
+                  content_type :json
+                  
+                  begin
+                    # Parse optional parameters
+                    params_body = request.body.read
+                    frog_params = params_body.empty? ? {} : JSON.parse(params_body)
+                    
+                    # Generate frog using LLM client
+                    llm_client = Frog::Adventure::Web::LLMClient.new
+                    frog = llm_client.generate_frog(frog_type: frog_params["frog_type"])
+                    
+                    { 
+                      status: "success", 
+                      frog: frog.to_h 
+                    }.to_json
+                  rescue JSON::ParserError
+                    status 400
+                    { status: "error", message: "Invalid JSON" }.to_json
+                  rescue => e
+                    status 500
+                    { status: "error", message: e.message }.to_json
+                  end
+                end
+              end
+              
               namespace "/player" do
                 # Get player profile
                 get "/profile" do

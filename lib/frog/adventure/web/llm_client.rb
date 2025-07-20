@@ -88,15 +88,54 @@ module Frog
         end
 
         def query_llm(prompt)
-          # For now, return a mock response until we have actual LLM integration
+          # For now, return a randomized mock response until we have actual LLM integration
           # This will be replaced with actual rubyllm calls
-          {
-            "name" => "Sparky",
-            "ability" => "Lightning Leap",
-            "description" => "A vibrant green tree frog with electric blue toe pads that sparkle with energy",
-            "species" => "Electrophorus Hopicus",
-            "backstory" => "Once struck by magical lightning while climbing the Great Oak, gained incredible speed and electrical powers"
-          }
+          mock_frogs = [
+            {
+              "name" => "Sparky",
+              "ability" => "Lightning Leap",
+              "description" => "A vibrant green tree frog with electric blue toe pads that sparkle with energy",
+              "species" => "Electrophorus Hopicus",
+              "backstory" => "Once struck by magical lightning while climbing the Great Oak, gained incredible speed and electrical powers"
+            },
+            {
+              "name" => "Bubbles",
+              "ability" => "Bubble Shield",
+              "description" => "A translucent glass frog with iridescent skin that shimmers like soap bubbles",
+              "species" => "Translucida Magnificus",
+              "backstory" => "Born in a magical spring, this frog can create protective bubbles and see through illusions"
+            },
+            {
+              "name" => "Rocky",
+              "ability" => "Stone Skin",
+              "description" => "A sturdy brown frog with rock-like bumps covering its tough hide",
+              "species" => "Petra Fortis",
+              "backstory" => "Raised among ancient stone guardians, developed unbreakable skin and earth magic"
+            },
+            {
+              "name" => "Whisper",
+              "ability" => "Shadow Step",
+              "description" => "A sleek black frog with silver markings that seem to shift in moonlight",
+              "species" => "Umbra Silentis",
+              "backstory" => "A master of stealth who learned the ancient art of shadow travel from the night spirits"
+            },
+            {
+              "name" => "Prism",
+              "ability" => "Rainbow Beam",
+              "description" => "A colorful frog whose skin changes hues like a living rainbow",
+              "species" => "Chromata Spectrus",
+              "backstory" => "Blessed by a fallen star, this frog can bend light and create dazzling displays"
+            },
+            {
+              "name" => "Sage",
+              "ability" => "Ancient Wisdom",
+              "description" => "An elderly-looking frog with wise amber eyes and mystical runes on its back",
+              "species" => "Sapientia Eternus",
+              "backstory" => "The oldest frog in the realm, keeper of forgotten knowledge and magical secrets"
+            }
+          ]
+          
+          mock_frogs.sample
         end
 
         def parse_frog_response(response, frog_type, stats, traits)

@@ -91,6 +91,278 @@ body {
   animation: hop 2s ease-in-out infinite;
 }
 
+/* Frog Preview Section */
+.frog-preview-section {
+  margin: 2rem 0;
+  padding: 2rem;
+  background: linear-gradient(135deg, var(--background-color), #ecfdf5);
+  border-radius: 12px;
+  border: 2px solid var(--secondary-color);
+}
+
+.frog-controls {
+  display: flex;
+  gap: 1rem;
+  margin-bottom: 2rem;
+  align-items: center;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.btn {
+  padding: 12px 24px;
+  border: none;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-size: 16px;
+}
+
+.btn-primary {
+  background: var(--primary-color);
+  color: white;
+}
+
+.btn-primary:hover {
+  background: var(--secondary-color);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(34, 197, 94, 0.3);
+}
+
+.form-select {
+  padding: 12px 16px;
+  border: 2px solid var(--primary-color);
+  border-radius: 8px;
+  background: white;
+  font-size: 16px;
+  cursor: pointer;
+  transition: border-color 0.3s ease;
+}
+
+.form-select:focus {
+  outline: none;
+  border-color: var(--secondary-color);
+}
+
+/* Frog Card */
+.frog-card {
+  background: white;
+  border-radius: 16px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+  margin: 2rem 0;
+  border: 3px solid var(--primary-color);
+  animation: fadeIn 0.5s ease-in;
+}
+
+.frog-header {
+  background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+  color: white;
+  padding: 1.5rem 2rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.frog-header h3 {
+  margin: 0;
+  font-size: 1.8rem;
+  font-weight: 700;
+}
+
+.frog-type-badge {
+  background: rgba(255, 255, 255, 0.2);
+  padding: 0.5rem 1rem;
+  border-radius: 20px;
+  font-weight: 600;
+  font-size: 0.9rem;
+}
+
+.frog-content {
+  padding: 2rem;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2rem;
+}
+
+.frog-description {
+  grid-column: 1 / -1;
+  text-align: center;
+  margin-bottom: 1rem;
+}
+
+.frog-description p {
+  font-size: 1.1rem;
+  line-height: 1.6;
+  margin-bottom: 1rem;
+}
+
+.frog-species {
+  color: #666;
+  font-style: italic;
+}
+
+/* Stats Section */
+.frog-stats h4 {
+  margin-bottom: 1rem;
+  color: var(--secondary-color);
+  font-size: 1.3rem;
+}
+
+.stat-row {
+  display: flex;
+  align-items: center;
+  margin-bottom: 0.8rem;
+  gap: 1rem;
+}
+
+.stat-label {
+  font-weight: 600;
+  min-width: 120px;
+  font-size: 0.9rem;
+}
+
+.stat-bar {
+  flex: 1;
+  height: 20px;
+  background: #e5e7eb;
+  border-radius: 10px;
+  overflow: hidden;
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.stat-fill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--primary-color), var(--secondary-color));
+  border-radius: 10px;
+  transition: width 0.8s ease-out;
+  position: relative;
+}
+
+.stat-value {
+  position: absolute;
+  right: 8px;
+  font-weight: 600;
+  font-size: 0.8rem;
+  color: #374151;
+  z-index: 1;
+}
+
+.total-stats {
+  margin-top: 1rem;
+  text-align: center;
+  font-size: 1.1rem;
+  color: var(--secondary-color);
+}
+
+/* Traits Section */
+.frog-traits h4 {
+  margin-bottom: 1rem;
+  color: var(--secondary-color);
+  font-size: 1.3rem;
+}
+
+.traits-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.trait-tag {
+  background: linear-gradient(135deg, #ddd6fe, #c7d2fe);
+  color: #5b21b6;
+  padding: 0.5rem 1rem;
+  border-radius: 20px;
+  font-weight: 600;
+  font-size: 0.9rem;
+  border: 2px solid #a855f7;
+}
+
+/* Ability Section */
+.frog-ability h4 {
+  margin-bottom: 1rem;
+  color: var(--secondary-color);
+  font-size: 1.3rem;
+}
+
+.ability-info {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.ability-name {
+  font-weight: 700;
+  font-size: 1.1rem;
+  color: #dc2626;
+}
+
+.ability-power {
+  font-weight: 600;
+  color: #7c3aed;
+  font-size: 0.9rem;
+}
+
+/* Backstory Section */
+.frog-backstory {
+  grid-column: 1 / -1;
+  margin-top: 1rem;
+  padding-top: 1.5rem;
+  border-top: 2px solid #e5e7eb;
+}
+
+.frog-backstory h4 {
+  margin-bottom: 1rem;
+  color: var(--secondary-color);
+  font-size: 1.3rem;
+}
+
+.frog-backstory p {
+  line-height: 1.6;
+  color: #4b5563;
+  font-style: italic;
+}
+
+/* Loading Indicator */
+.loading {
+  text-align: center;
+  padding: 3rem;
+}
+
+.spinner {
+  border: 4px solid #f3f4f6;
+  border-top: 4px solid var(--primary-color);
+  border-radius: 50%;
+  width: 50px;
+  height: 50px;
+  animation: spin 1s linear infinite;
+  margin: 0 auto 1rem;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Utility Classes */
+.hidden {
+  display: none !important;
+}
+
 /* Responsive design */
 @media (max-width: 768px) {
   .welcome h1 {
@@ -99,5 +371,19 @@ body {
   
   .container {
     padding: 1rem;
+  }
+  
+  .frog-content {
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+  }
+  
+  .frog-controls {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  
+  .stat-label {
+    min-width: 100px;
   }
 }

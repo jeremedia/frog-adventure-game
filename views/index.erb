@@ -1,15 +1,114 @@
 <div class="welcome">
   <h1>🐸 Frog Adventure Web 🐸</h1>
   <p>Welcome to the web version of Frog Adventure!</p>
-  <p>This game is currently under development.</p>
+  <p>A roguelike adventure where your companion frog's stats dramatically change your journey!</p>
+  
+  <div class="frog-preview-section">
+    <h2>🎲 Preview Your Frog Companion</h2>
+    <p>See how our enhanced frog generation system creates unique companions with stats, traits, and personalities!</p>
+    
+    <div class="frog-controls">
+      <button id="generate-frog" class="btn btn-primary">Generate Random Frog</button>
+      <select id="frog-type-selector" class="form-select">
+        <option value="">Random Type</option>
+        <option value="Tree Frog">Tree Frog (Agile)</option>
+        <option value="Poison Dart Frog">Poison Dart Frog (Smart & Quick)</option>
+        <option value="Bullfrog">Bullfrog (Strong)</option>
+        <option value="Glass Frog">Glass Frog (Magical & Wise)</option>
+        <option value="Rocket Frog">Rocket Frog (Super Fast)</option>
+        <option value="Rain Frog">Rain Frog (Intelligent & Lucky)</option>
+      </select>
+    </div>
+    
+    <div id="frog-display" class="frog-card hidden">
+      <div class="frog-header">
+        <h3 id="frog-name">Frog Name</h3>
+        <span id="frog-type" class="frog-type-badge">Type</span>
+      </div>
+      
+      <div class="frog-content">
+        <div class="frog-description">
+          <p id="frog-description">Description goes here...</p>
+          <p class="frog-species"><strong>Species:</strong> <span id="frog-species">Unknown</span></p>
+        </div>
+        
+        <div class="frog-stats">
+          <h4>Stats</h4>
+          <div class="stat-bars">
+            <div class="stat-row">
+              <span class="stat-label">💪 Strength</span>
+              <div class="stat-bar">
+                <div id="strength-bar" class="stat-fill"></div>
+                <span id="strength-value" class="stat-value">0</span>
+              </div>
+            </div>
+            <div class="stat-row">
+              <span class="stat-label">🏃 Agility</span>
+              <div class="stat-bar">
+                <div id="agility-bar" class="stat-fill"></div>
+                <span id="agility-value" class="stat-value">0</span>
+              </div>
+            </div>
+            <div class="stat-row">
+              <span class="stat-label">🧠 Intelligence</span>
+              <div class="stat-bar">
+                <div id="intelligence-bar" class="stat-fill"></div>
+                <span id="intelligence-value" class="stat-value">0</span>
+              </div>
+            </div>
+            <div class="stat-row">
+              <span class="stat-label">✨ Magic</span>
+              <div class="stat-bar">
+                <div id="magic-bar" class="stat-fill"></div>
+                <span id="magic-value" class="stat-value">0</span>
+              </div>
+            </div>
+            <div class="stat-row">
+              <span class="stat-label">🍀 Luck</span>
+              <div class="stat-bar">
+                <div id="luck-bar" class="stat-fill"></div>
+                <span id="luck-value" class="stat-value">0</span>
+              </div>
+            </div>
+          </div>
+          <div class="total-stats">
+            <strong>Total: <span id="total-stats">0</span>/85</strong>
+          </div>
+        </div>
+        
+        <div class="frog-traits">
+          <h4>Personality Traits</h4>
+          <div id="traits-list" class="traits-container"></div>
+        </div>
+        
+        <div class="frog-ability">
+          <h4>Special Ability</h4>
+          <div class="ability-info">
+            <span id="ability-name" class="ability-name">Ability Name</span>
+            <span id="ability-power" class="ability-power">Power: 0</span>
+          </div>
+        </div>
+        
+        <div class="frog-backstory">
+          <h4>Backstory</h4>
+          <p id="frog-backstory">The frog's origin story will appear here...</p>
+        </div>
+      </div>
+    </div>
+    
+    <div id="loading-indicator" class="loading hidden">
+      <div class="spinner"></div>
+      <p>Generating your frog companion...</p>
+    </div>
+  </div>
   
   <div class="game-status">
     <h2>Development Status</h2>
     <p>Phase 1: Infrastructure Setup ✅</p>
-    <p>Phase 2: Game Engine (In Progress)</p>
-    <p>Phase 3: LLM Integration (Pending)</p>
-    <p>Phase 4: Web UI (Pending)</p>
-    <p>Phase 5: Polish & Launch (Pending)</p>
+    <p>Phase 2.5: Enhanced Frog Generation ✅</p>
+    <p>Phase 3: Adventure System (In Progress)</p>
+    <p>Phase 4: Narrative Generation (Planned)</p>
+    <p>Phase 5: Polish & Launch (Planned)</p>
   </div>
   
   <button id="start-game" disabled>Start Adventure (Coming Soon)</button>

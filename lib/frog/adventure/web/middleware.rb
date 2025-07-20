@@ -6,31 +6,31 @@ module Frog
       # Middleware configuration for the Sinatra app
       module Middleware
         def self.configure(app)
-          # Request ID middleware for tracking
-          app.use Rack::RequestId if defined?(Rack::RequestId)
+          # Request ID middleware for tracking - disabled due to Rack::Lint header case issue
+          # app.use Rack::RequestId if defined?(Rack::RequestId)
           
-          # CORS middleware for API endpoints
-          app.use Rack::Cors do
-            allow do
-              origins ENV.fetch("CORS_ORIGINS", "*").split(",")
-              resource "/api/*",
-                headers: :any,
-                methods: [:get, :post, :put, :patch, :delete, :options]
-            end
-          end if defined?(Rack::Cors)
+          # CORS middleware for API endpoints - temporarily disabled for debugging
+          # app.use Rack::Cors do
+          #   allow do
+          #     origins ENV.fetch("CORS_ORIGINS", "*").split(",")
+          #     resource "/api/*",
+          #       headers: :any,
+          #       methods: [:get, :post, :put, :patch, :delete, :options]
+          #   end
+          # end if defined?(Rack::Cors)
           
-          # Request throttling
-          if defined?(Rack::Attack)
-            app.use Rack::Attack
-            
-            Rack::Attack.throttle("requests by ip", limit: 60, period: 60) do |request|
-              request.ip
-            end
-            
-            Rack::Attack.throttle("api requests by ip", limit: 20, period: 60) do |request|
-              request.ip if request.path.start_with?("/api")
-            end
-          end
+          # Request throttling - temporarily disabled for debugging
+          # if defined?(Rack::Attack)
+          #   app.use Rack::Attack
+          #   
+          #   Rack::Attack.throttle("requests by ip", limit: 60, period: 60) do |request|
+          #     request.ip
+          #   end
+          #   
+          #   Rack::Attack.throttle("api requests by ip", limit: 20, period: 60) do |request|
+          #     request.ip if request.path.start_with?("/api")
+          #   end
+          # end
           
           # Custom middleware for request logging
           app.use RequestLogger

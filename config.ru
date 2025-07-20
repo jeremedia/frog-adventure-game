@@ -13,10 +13,10 @@ use Rack::Deflater # Enable gzip compression
 use Rack::ConditionalGet # Support conditional GET requests
 use Rack::ETag # Add ETag headers
 
-# Add request ID tracking
-if defined?(Rack::RequestId)
-  use Rack::RequestId
-end
+# Add request ID tracking - disabled due to Rack::Lint header case issue
+# if defined?(Rack::RequestId)
+#   use Rack::RequestId
+# end
 
 # Enable runtime monitoring in production
 if ENV["RACK_ENV"] == "production" && defined?(Rack::Runtime)
