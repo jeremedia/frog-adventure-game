@@ -17,7 +17,17 @@
       "Bash(bundle:*)",
       "Bash(mv:*)",
       "Bash(rmdir:*)",
-      "Bash(rm:*)"
+      "Bash(rm:*)",
+      "Bash(gem search:*)",
+      "Bash(pkill:*)",
+      "mcp__playwright__playwright_navigate",
+      "mcp__playwright__playwright_screenshot",
+      "mcp__playwright__playwright_get_visible_text",
+      "mcp__playwright__playwright_get",
+      "mcp__playwright__playwright_close",
+      "Bash(gh pr list:*)",
+      "Bash(gh pr view:*)",
+      "Bash(gh pr comment:*)"
     ],
     "deny": []
   }
