@@ -33,7 +33,13 @@ bundle exec rubocop
 
 ## Architecture Overview
 
-### Core Components
+### Ruby Web Version (New)
+- **Frog::Adventure::Web::App** (`lib/frog/adventure/web/app.rb`): Sinatra web application
+- **Frog::Adventure::Web::GameEngine** (`lib/frog/adventure/web/game_engine.rb`): Core game logic
+- **Frog::Adventure::Web::LLMClient** (`lib/frog/adventure/web/llm_client.rb`): Multi-provider LLM integration
+- **State Management**: Redis-based persistence for web sessions
+
+### Original Python Version
 - **Main Game Loop** (`frog_adventure.py`): Single-file implementation containing all game logic
 - **AI Integration**: Uses OpenAI API for dynamic frog generation with structured outputs via Pydantic
 - **Fallback System**: Predefined frog data when AI is unavailable
@@ -112,3 +118,50 @@ Check issue descriptions for "Depends on:" references. Do not start work on issu
 3. Ensure all tests pass
 4. Update documentation as needed
 5. Request review when ready
+
+## Concrete Example: Issue #1 Workflow
+
+Here's how Issue #1 was completed following the protocol:
+
+### 1. Claiming Work
+```bash
+# Check issue details
+gh issue view 1 --json number,title,labels,body
+
+# Assign to self
+gh issue edit 1 --add-assignee @me
+
+# Comment on issue
+gh issue comment 1 --body "🤖 Agent claude-3-5-sonnet-20241022 starting work..."
+
+# Create feature branch
+git checkout -b feature/issue-1-gem-structure
+```
+
+### 2. During Work
+- Created TodoWrite list to track acceptance criteria
+- Implemented each requirement systematically
+- Used proper Ruby gem conventions
+- Committed with descriptive message
+
+### 3. Completing Work
+```bash
+# Commit all changes
+git add -A
+git commit -m "Initialize Ruby gem structure..."
+
+# Push branch
+git push -u origin feature/issue-1-gem-structure
+
+# Create PR
+gh pr create --title "[FEATURE] Initialize Ruby gem structure..." \
+  --body "## Summary..."
+```
+
+### 4. Result
+- PR #26 created and linked to Issue #1
+- Clear documentation for next agents
+- Unblocked issues #2, #6 for other agents to pick up
+- All work preserved in feature branch
+
+This demonstrates the complete workflow from claiming to handoff.
