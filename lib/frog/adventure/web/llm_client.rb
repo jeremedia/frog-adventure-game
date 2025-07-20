@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require "rubyllm"
+require "ruby_llm"
 
 module Frog
   module Adventure
