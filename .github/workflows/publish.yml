@@ -1,0 +1,50 @@
+name: Publish Gem
+
+on:
+  workflow_dispatch:
+    inputs:
+      version:
+        description: 'Version to publish (e.g., 0.1.0)'
+        required: true
+        type: string
+  release:
+    types: [published]
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - uses: actions/checkout@v4
+    
+    - name: Set up Ruby
+      uses: ruby/setup-ruby@v1
+      with:
+        ruby-version: '3.3'
+        bundler-cache: true
+    
+    - name: Configure credentials
+      run: |
+        mkdir -p ~/.gem
+        echo "---" > ~/.gem/credentials
+        echo ":rubygems_api_key: ${{ secrets.RUBYGEMS_API_KEY }}" >> ~/.gem/credentials
+        chmod 0600 ~/.gem/credentials
+    
+    - name: Build gem
+      run: gem build *.gemspec
+    
+    - name: Publish to RubyGems
+      run: |
+        gem_file=$(ls *.gem | head -1)
+        echo "Publishing $gem_file to RubyGems..."
+        gem push "$gem_file"
+    
+    - name: Clean up credentials
+      if: always()
+      run: rm -f ~/.gem/credentials
+    
+    - name: Upload gem as artifact
+      uses: actions/upload-artifact@v4
+      with:
+        name: gem-artifact
+        path: "*.gem"
