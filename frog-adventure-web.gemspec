@@ -35,12 +35,15 @@ Gem::Specification.new do |spec|
 
   # Runtime dependencies
   spec.add_dependency "sinatra", "~> 4.0"
+  spec.add_dependency "sinatra-contrib", "~> 4.0"
   spec.add_dependency "rackup", "~> 2.1"
   spec.add_dependency "puma", "~> 6.4"
   spec.add_dependency "rubyllm", "~> 0.1"
   spec.add_dependency "redis", "~> 5.0"
   spec.add_dependency "json", "~> 2.7"
   spec.add_dependency "dotenv", "~> 3.1"
+  spec.add_dependency "rack-cors", "~> 2.0"
+  spec.add_dependency "rack-request-id", "~> 0.0.4"
 
   # Development dependencies
   spec.add_development_dependency "rspec", "~> 3.13"
