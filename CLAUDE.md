@@ -79,6 +79,34 @@ bundle exec rubocop
 - Combat system uses turn-based mechanics with randomized damage
 - Special endings triggered by specific frog combinations
 
+## Interactive Features
+
+### Frog Preview System
+The web application includes an interactive frog companion preview system that allows players to generate and preview randomly-generated frogs before starting adventures.
+
+**Key Components:**
+- **API Endpoint**: `POST /api/frog/generate` - RESTful endpoint for frog generation
+- **Frontend UI**: Interactive button with real-time frog display and animated stat bars
+- **Responsive Design**: Mobile-friendly frog cards with CSS animations
+- **Error Handling**: Graceful fallbacks for network errors and API failures
+- **Randomization**: 6 unique mock frogs with varied abilities, species, and backstories
+
+**Technical Implementation:**
+- **Backend**: Sinatra routes with JSON responses, proper error handling
+- **Frontend**: Vanilla JavaScript with fetch API for AJAX calls
+- **Styling**: Custom CSS with animated progress bars and loading states
+- **Mock Data**: Rich frog variations including Sparky, Bubbles, Rocky, Whisper, Prism, and Sage
+- **Stats Display**: Visual representation of Strength, Agility, Intelligence, Magic, and Luck
+
+**Files Modified:**
+- `lib/frog/adventure/web/routes.rb` - Added frog generation API endpoint
+- `views/index.erb` - Enhanced homepage with interactive preview section
+- `public/css/style.css` - Added frog card styling and animations (272 lines)
+- `public/js/app.js` - Complete rewrite for interactive functionality
+- `lib/frog/adventure/web/llm_client.rb` - Randomized mock frog generation
+
+This feature provides immediate visual feedback and demonstrates the game's frog generation system without requiring full gameplay implementation.
+
 ## Multi-Agent Collaboration Protocol
 
 ### Starting Work

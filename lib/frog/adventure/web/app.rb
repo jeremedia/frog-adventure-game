@@ -15,6 +15,7 @@ require "securerandom"
 require "dotenv/load"
 
 require_relative "routes"
+require_relative "middleware"
 
 module Frog
   module Adventure

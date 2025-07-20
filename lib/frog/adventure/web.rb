@@ -2,6 +2,7 @@
 
 require_relative "web/version"
 require_relative "web/config"
+require_relative "web/models"
 require_relative "web/routes"
 require_relative "web/app"
 require_relative "web/game_engine"
