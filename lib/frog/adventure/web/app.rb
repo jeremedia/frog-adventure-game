@@ -25,7 +25,7 @@ module Frog
         register Sinatra::Namespace
         
         # Apply middleware configuration
-        Middleware.configure(self)
+        # Web::Middleware.configure(self) # TODO: Fix load order
         
         # Include routes
         include Routes
