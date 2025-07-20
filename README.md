@@ -1,49 +1,39 @@
-# 🐸 Frog Adventure Game
+# Frog::Adventure::Web
 
-A fun adventure game where you explore with a different frog companion each time! Now featuring AI-generated unique frogs using OpenAI's structured outputs.
+TODO: Delete this and the text below, and describe your gem
 
-## Features
+Welcome to your new gem! In this directory, you'll find the files you need to be able to package up your Ruby library into a gem. Put your Ruby code in the file `lib/frog/adventure/web`. To experiment with that code, run `bin/console` for an interactive prompt.
 
-- **AI-Generated Frogs**: Each run creates a completely unique frog with personality, backstory, and special abilities
-- **Fallback Mode**: Works without OpenAI API key using pre-defined frog types
-- **Adventure Scenarios**: Multiple random adventures to explore
-- **Save/Load System**: Continue your adventures later
-- **Energy & Happiness**: Manage your frog's well-being
+## Installation
 
-## Setup
+TODO: Replace `UPDATE_WITH_YOUR_GEM_NAME_IMMEDIATELY_AFTER_RELEASE_TO_RUBYGEMS_ORG` with your gem name right after releasing it to RubyGems.org. Please do not do it earlier due to security reasons. Alternatively, replace this section with instructions to install your gem from git if you don't plan to release to RubyGems.org.
 
-1. Install dependencies:
-```bash
-pip install -r requirements.txt
-```
-
-2. (Optional) Set up OpenAI API key for AI-generated frogs:
-```bash
-export OPENAI_API_KEY="your-api-key-here"
-```
-
-## Running the Game
+Install the gem and add to the application's Gemfile by executing:
 
 ```bash
-python3 frog_adventure.py
+bundle add UPDATE_WITH_YOUR_GEM_NAME_IMMEDIATELY_AFTER_RELEASE_TO_RUBYGEMS_ORG
 ```
 
-## How to Play
+If bundler is not being used to manage dependencies, install the gem by executing:
 
-1. Meet your randomly generated frog companion
-2. Go on adventures and make choices
-3. Use your frog's special ability to overcome challenges
-4. Rest to restore energy and feed to increase happiness
-5. Collect items and complete adventures
-6. Save your progress anytime
+```bash
+gem install UPDATE_WITH_YOUR_GEM_NAME_IMMEDIATELY_AFTER_RELEASE_TO_RUBYGEMS_ORG
+```
 
-## AI Frog Generation
+## Usage
 
-When OpenAI API is configured, frogs are generated with:
-- Unique names and species
-- Detailed appearance and personality
-- Creative special abilities
-- Interesting backstories
-- Custom traits and quirks
+TODO: Write usage instructions here
 
-Without API key, the game uses 6 pre-defined frog types with their own abilities.
+## Development
+
+After checking out the repo, run `bin/setup` to install dependencies. You can also run `bin/console` for an interactive prompt that will allow you to experiment.
+
+To install this gem onto your local machine, run `bundle exec rake install`. To release a new version, update the version number in `version.rb`, and then run `bundle exec rake release`, which will create a git tag for the version, push git commits and the created tag, and push the `.gem` file to [rubygems.org](https://rubygems.org).
+
+## Contributing
+
+Bug reports and pull requests are welcome on GitHub at https://github.com/[USERNAME]/frog-adventure-web.
+
+## License
+
+The gem is available as open source under the terms of the [MIT License](https://opensource.org/licenses/MIT).
