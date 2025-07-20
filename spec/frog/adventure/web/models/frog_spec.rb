@@ -28,6 +28,11 @@ RSpec.describe Frog::Adventure::Web::Models::Frog do
         expect(frog.species).to eq("")
         expect(frog.personality).to eq("")
         expect(frog.backstory).to eq("")
+        expect(frog.stats).to be_a(Hash)
+        expect(frog.stats.keys).to contain_exactly(:strength, :agility, :intelligence, :magic, :luck)
+        expect(frog.traits).to be_an(Array)
+        expect(frog.traits.length).to be_between(2, 3)
+        expect(frog.ability_cooldown).to eq(0)
       end
 
       it 'creates a frog with custom values' do
@@ -247,18 +252,19 @@ RSpec.describe Frog::Adventure::Web::Models::Frog do
     it 'returns hash representation' do
       hash = frog.to_h
       
-      expect(hash).to eq({
-        name: "Ribbit",
-        type: "Tree Frog",
-        ability: "Climb anywhere",
-        description: "A nimble green frog with sticky toe pads",
-        energy: 100,
-        happiness: 50,
-        items: [],
-        species: "",
-        personality: "",
-        backstory: ""
-      })
+      expect(hash[:name]).to eq("Ribbit")
+      expect(hash[:type]).to eq("Tree Frog")
+      expect(hash[:ability]).to eq("Climb anywhere")
+      expect(hash[:description]).to eq("A nimble green frog with sticky toe pads")
+      expect(hash[:energy]).to eq(100)
+      expect(hash[:happiness]).to eq(50)
+      expect(hash[:items]).to eq([])
+      expect(hash[:species]).to eq("")
+      expect(hash[:personality]).to eq("")
+      expect(hash[:backstory]).to eq("")
+      expect(hash[:stats]).to be_a(Hash)
+      expect(hash[:traits]).to be_an(Array)
+      expect(hash[:ability_cooldown]).to eq(0)
     end
   end
 
@@ -334,6 +340,142 @@ RSpec.describe Frog::Adventure::Web::Models::Frog do
       
       frog = described_class.from_hash(data)
       expect(frog.frog_type).to eq("Glass Frog")
+    end
+  end
+
+  describe 'stats system' do
+    let(:frog) { described_class.new(**valid_attributes) }
+
+    describe '#stats' do
+      it 'generates stats based on frog type' do
+        tree_frog = described_class.new(**valid_attributes.merge(frog_type: Frog::Adventure::Web::Models::FrogType::TREE_FROG))
+        expect(tree_frog.stats[:agility]).to be >= 12  # Tree frogs should have high agility base
+        
+        bullfrog = described_class.new(**valid_attributes.merge(frog_type: Frog::Adventure::Web::Models::FrogType::BULLFROG))
+        expect(bullfrog.stats[:strength]).to be >= 15  # Bullfrogs should have high strength base
+      end
+
+      it 'keeps all stats within valid range' do
+        frog.stats.each do |stat, value|
+          expect(value).to be_between(5, 20)
+        end
+      end
+
+      it 'prevents total stats from being too high' do
+        expect(frog.total_stats).to be <= 85
+      end
+    end
+
+    describe '#traits' do
+      it 'generates 2-3 personality traits' do
+        expect(frog.traits.length).to be_between(2, 3)
+      end
+
+      it 'does not include contradictory traits' do
+        contradictory_pairs = [
+          ["Brave", "Cautious"], ["Friendly", "Grumpy"], ["Energetic", "Lazy"],
+          ["Optimistic", "Pessimistic"], ["Patient", "Impulsive"]
+        ]
+        
+        contradictory_pairs.each do |pair|
+          if frog.traits.include?(pair[0])
+            expect(frog.traits).not_to include(pair[1])
+          end
+        end
+      end
+    end
+
+    describe '#ability_power' do
+      it 'calculates ability power based on magic stat' do
+        power = frog.ability_power
+        expected_power = 10 * (1 + frog.stats[:magic] / 20.0)
+        expect(power).to be_within(0.1).of(expected_power)
+      end
+    end
+
+    describe '#can_use_ability?' do
+      it 'returns true when ability is off cooldown' do
+        frog.ability_cooldown = 0
+        expect(frog.can_use_ability?).to be true
+      end
+
+      it 'returns false when ability is on cooldown' do
+        frog.ability_cooldown = 2
+        expect(frog.can_use_ability?).to be false
+      end
+    end
+
+    describe '#use_ability!' do
+      it 'returns true and sets cooldown when ability can be used' do
+        frog.ability_cooldown = 0
+        result = frog.use_ability!
+        
+        expect(result).to be true
+        expect(frog.ability_cooldown).to eq(3)
+      end
+
+      it 'returns false when ability is on cooldown' do
+        frog.ability_cooldown = 2
+        result = frog.use_ability!
+        
+        expect(result).to be false
+        expect(frog.ability_cooldown).to eq(2)  # Unchanged
+      end
+    end
+
+    describe '#reduce_cooldown!' do
+      it 'reduces cooldown by 1' do
+        frog.ability_cooldown = 3
+        frog.reduce_cooldown!
+        expect(frog.ability_cooldown).to eq(2)
+      end
+
+      it 'does not go below 0' do
+        frog.ability_cooldown = 0
+        frog.reduce_cooldown!
+        expect(frog.ability_cooldown).to eq(0)
+      end
+    end
+  end
+
+  describe 'validation' do
+    it 'raises error for invalid stats hash' do
+      expect {
+        described_class.new(**valid_attributes, stats: "not a hash")
+      }.to raise_error(ArgumentError, "Stats must be a hash")
+    end
+
+    it 'raises error for invalid traits array' do
+      expect {
+        described_class.new(**valid_attributes, traits: "not an array")
+      }.to raise_error(ArgumentError, "Traits must be an array")
+    end
+
+    it 'raises error for negative ability cooldown' do
+      expect {
+        described_class.new(**valid_attributes, ability_cooldown: -1)
+      }.to raise_error(ArgumentError, "Ability cooldown must be non-negative")
+    end
+
+    it 'raises error for missing stats' do
+      incomplete_stats = { strength: 10, agility: 10 }  # Missing magic, intelligence, luck
+      expect {
+        described_class.new(**valid_attributes, stats: incomplete_stats)
+      }.to raise_error(ArgumentError, /Missing required stat/)
+    end
+
+    it 'raises error for stats out of range' do
+      invalid_stats = { strength: 25, agility: 10, intelligence: 10, magic: 10, luck: 10 }
+      expect {
+        described_class.new(**valid_attributes, stats: invalid_stats)
+      }.to raise_error(ArgumentError, /must be between 5 and 20/)
+    end
+
+    it 'raises error for total stats too high' do
+      overpowered_stats = { strength: 20, agility: 20, intelligence: 20, magic: 20, luck: 20 }
+      expect {
+        described_class.new(**valid_attributes, stats: overpowered_stats)
+      }.to raise_error(ArgumentError, /Total stats too high/)
     end
   end
 end
