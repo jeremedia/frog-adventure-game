@@ -27,16 +27,13 @@ module Frog
           
           prompt = build_frog_generation_prompt(frog_type, base_frog.stats, base_frog.traits)
           
-          # Temporarily use fallback while debugging LLM integration
-          return generate_fallback_frog(frog_type, base_frog.stats, base_frog.traits)
-          
-          # TODO: Re-enable LLM generation after fixing configuration
-          # begin
-          #   response = query_llm(prompt)
-          #   return parse_frog_response(response, frog_type, base_frog.stats, base_frog.traits)
-          # rescue => e
-          #   return generate_fallback_frog(frog_type, base_frog.stats, base_frog.traits)
-          # end
+          begin
+            response = query_llm(prompt)
+            return parse_frog_response(response, frog_type, base_frog.stats, base_frog.traits)
+          rescue => e
+            puts "LLM frog generation failed: #{e.message}"
+            return generate_fallback_frog(frog_type, base_frog.stats, base_frog.traits)
+          end
         end
 
         # Generate an adventure scenario
@@ -86,14 +83,10 @@ module Frog
 
         def configure_llm
           # Configure ruby_llm to use Ollama for local LLM generation
-          # Following https://rubyllm.com/configuration#ollama-api-base-ollama_api_base
-          RubyLLM.configure do |config|
-            config.provider = :ollama
-            config.ollama_api_base = "http://localhost:11434"
-            config.model = "gemma3n:e4b"
-            config.temperature = 0.8
-            config.timeout = 30
-          end
+          # RubyLLM uses environment variables for configuration
+          ENV['OLLAMA_API_BASE'] = "http://localhost:11434"
+          ENV['LLM_PROVIDER'] = 'ollama'
+          ENV['OLLAMA_MODEL'] = 'gemma3n:e4b'
         end
 
         def build_frog_generation_prompt(frog_type, stats, traits)
@@ -129,11 +122,43 @@ module Frog
         def query_llm(prompt)
           # Use RubyLLM to query Ollama
           begin
-            response = RubyLLM.call(prompt)
-            return response.strip
+            # puts "DEBUG: Querying LLM with prompt length: #{prompt.length}"
+            
+            # Direct call to Ollama API since RubyLLM might not support it properly
+            require 'net/http'
+            require 'json'
+            
+            uri = URI("http://localhost:11434/api/generate")
+            request = Net::HTTP::Post.new(uri)
+            request['Content-Type'] = 'application/json'
+            request.body = {
+              model: 'gemma3n:e4b',
+              prompt: prompt,
+              stream: false,
+              temperature: 0.8
+            }.to_json
+            
+            # puts "DEBUG: Sending request to Ollama..."
+            response = Net::HTTP.start(uri.hostname, uri.port) do |http|
+              http.read_timeout = 30
+              http.request(request)
+            end
+            
+            # puts "DEBUG: Got response from Ollama: #{response.code}"
+            
+            if response.code == '200'
+              result = JSON.parse(response.body)
+              generated_text = result['response'].strip
+              # puts "DEBUG: Generated text (#{generated_text.length} chars)"
+              return generated_text
+            else
+              raise "Ollama API error: #{response.code} - #{response.body}"
+            end
           rescue => e
             # Fallback to mock data if LLM fails
-            puts "LLM call failed: #{e.message}"
+            puts "LLM call failed: #{e.class} - #{e.message}"
+            puts "Backtrace: #{e.backtrace.first(3).join("\n")}"
+            puts "Using fallback data..."
             return generate_mock_response(prompt)
           end
         end
@@ -343,7 +368,7 @@ module Frog
             }
           ]
 
-          scenario = scenarios.sample
+          scenario = fallback_scenarios.sample
           
           # Create a simple scenario struct
           OpenStruct.new(scenario)

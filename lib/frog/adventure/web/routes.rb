@@ -171,76 +171,64 @@ module Frog
                 post "/generate" do
                   content_type :json
                   
-                  # Simple working fallback frogs with varied stats
-                  fallback_frogs = [
-                    {
-                      name: "Sparky",
-                      type: "Tree Frog",
-                      ability: "Lightning Leap", 
-                      description: "A vibrant green tree frog with electric blue toe pads that sparkle with energy",
-                      energy: 100,
-                      happiness: 75,
-                      stats: { strength: 8, agility: 18, intelligence: 12, magic: 14, luck: 13 },
-                      traits: ["Energetic", "Brave"],
-                      species: "Electrophorus Hopicus",
-                      backstory: "Once struck by magical lightning while climbing the Great Oak, gained incredible speed and electrical powers"
-                    },
-                    {
-                      name: "Bubbles",
-                      type: "Glass Frog",
-                      ability: "Bubble Shield",
-                      description: "A translucent glass frog with iridescent skin that shimmers like soap bubbles",
-                      energy: 100,
-                      happiness: 75,
-                      stats: { strength: 6, agility: 12, intelligence: 16, magic: 17, luck: 9 },
-                      traits: ["Wise", "Calm"],
-                      species: "Translucida Magnificus", 
-                      backstory: "Born in a magical spring, this frog can create protective bubbles and see through illusions"
-                    },
-                    {
-                      name: "Rocky",
-                      type: "Bullfrog",
-                      ability: "Stone Skin",
-                      description: "A sturdy brown frog with rock-like bumps covering its tough hide",
-                      energy: 100,
-                      happiness: 75,
-                      stats: { strength: 19, agility: 7, intelligence: 8, magic: 11, luck: 12 },
-                      traits: ["Patient", "Loyal"],
-                      species: "Petra Fortis",
-                      backstory: "Raised among ancient stone guardians, developed unbreakable skin and earth magic"
-                    },
-                    {
-                      name: "Prism",
-                      type: "Poison Dart Frog",
-                      ability: "Rainbow Beam",
-                      description: "A colorful frog whose skin changes hues like a living rainbow",
-                      energy: 100,
-                      happiness: 75,
-                      stats: { strength: 7, agility: 16, intelligence: 14, magic: 18, luck: 8 },
-                      traits: ["Curious", "Mischievous"],
-                      species: "Chromata Spectrus",
-                      backstory: "Blessed by a fallen star, this frog can bend light and create dazzling displays"
-                    },
-                    {
-                      name: "Sage",
-                      type: "Rain Frog",
-                      ability: "Ancient Wisdom",
-                      description: "An elderly-looking frog with wise amber eyes and mystical runes on its back",
-                      energy: 100,
-                      happiness: 75,
-                      stats: { strength: 9, agility: 8, intelligence: 20, magic: 16, luck: 15 },
-                      traits: ["Wise", "Patient"],
-                      species: "Sapientia Eternus",
-                      backstory: "The oldest frog in the realm, keeper of forgotten knowledge and magical secrets"
-                    }
-                  ]
-                  
-                  selected_frog = fallback_frogs.sample
-                  
-                  { 
-                    status: "success", 
-                    frog: selected_frog 
-                  }.to_json
+                  begin
+                    # Use LLM to generate unique frog
+                    llm_client = Frog::Adventure::Web::LLMClient.new
+                    request_data = JSON.parse(request.body.read) rescue {}
+                    frog_type = request_data["frog_type"] || nil
+                    
+                    # Generate frog using LLM
+                    generated_frog = llm_client.generate_frog(frog_type: frog_type)
+                    
+                    if generated_frog
+                      # Convert Frog model to hash format expected by frontend
+                      frog_data = {
+                        name: generated_frog.name,
+                        type: generated_frog.frog_type,
+                        ability: generated_frog.ability,
+                        description: generated_frog.description,
+                        energy: generated_frog.energy,
+                        happiness: generated_frog.happiness,
+                        stats: generated_frog.stats,
+                        traits: generated_frog.traits,
+                        species: generated_frog.species,
+                        backstory: generated_frog.backstory
+                      }
+                      
+                      { 
+                        status: "success", 
+                        frog: frog_data 
+                      }.to_json
+                    else
+                      # Fallback if LLM fails completely
+                      fallback_frogs = [
+                        {
+                          name: "Sparky",
+                          type: "Tree Frog",
+                          ability: "Lightning Leap", 
+                          description: "A vibrant green tree frog with electric blue toe pads that sparkle with energy",
+                          energy: 100,
+                          happiness: 75,
+                          stats: { strength: 8, agility: 18, intelligence: 12, magic: 14, luck: 13 },
+                          traits: ["Energetic", "Brave"],
+                          species: "Electrophorus Hopicus",
+                          backstory: "Once struck by magical lightning while climbing the Great Oak, gained incredible speed and electrical powers"
+                        }
+                      ]
+                      
+                      selected_frog = fallback_frogs.sample
+                      
+                      { 
+                        status: "success", 
+                        frog: selected_frog,
+                        warning: "Using fallback frog due to LLM error"
+                      }.to_json
+                    end
+                  rescue => e
+                    puts "Frog generation error: #{e.message}"
+                    status 500
+                    { status: "error", message: "Failed to generate frog" }.to_json
+                  end
                 end
               end
               
@@ -250,8 +238,22 @@ module Frog
                 post "/start" do
                   content_type :json
                   
-                  # Working adventure scenarios
-                  scenarios = [
+                  begin
+                    # Use LLM to generate adventure scenario
+                    llm_client = Frog::Adventure::Web::LLMClient.new
+                    request_data = JSON.parse(request.body.read) rescue {}
+                    frog_stats = request_data["frog_stats"] || {}
+                    
+                    scenario = llm_client.generate_adventure_scenario(frog_stats: frog_stats)
+                    
+                    if scenario
+                      { 
+                        status: "success", 
+                        scenario: scenario.to_h
+                      }.to_json
+                    else
+                      # Fallback to hardcoded scenarios if LLM fails
+                      scenarios = [
                     {
                       id: SecureRandom.uuid,
                       title: "The Glowing Mushroom Grove",
@@ -304,52 +306,73 @@ module Frog
                     }
                   ]
                   
-                  scenario = scenarios.sample
-                  
-                  { 
-                    status: "success", 
-                    scenario: scenario
-                  }.to_json
+                      scenario = scenarios.sample
+                      
+                      { 
+                        status: "success", 
+                        scenario: scenario
+                      }.to_json
+                    end
+                  rescue => e
+                    puts "Adventure generation error: #{e.message}"
+                    status 500
+                    { status: "error", message: "Failed to generate adventure" }.to_json
+                  end
                 end
                 
                 # Make an adventure choice
                 post "/choice" do
                   content_type :json
                   
-                  choice_params = JSON.parse(request.body.read)
-                  choice = choice_params["choice"] || {}
-                  risk = choice["risk"] || "medium"
-                  
-                  # Generate outcomes based on risk level
-                  outcomes = {
-                    high: [
-                      { message: "Your bold action pays off spectacularly! You discover a hidden magical artifact!", energy_change: 10, happiness_change: 25, item: "Mystic Crystal" },
-                      { message: "The risk was too great! Your frog gets caught in a magical trap but escapes with new wisdom.", energy_change: -15, happiness_change: 5 },
-                      { message: "Amazing! Your frog unlocks a secret passage to a treasure chamber!", energy_change: 0, happiness_change: 30, item: "Golden Lily Pad" },
-                      { message: "The magic backfires! Your frog is temporarily confused but gains magical resistance.", energy_change: -20, happiness_change: -5 }
-                    ],
-                    medium: [
-                      { message: "A wise choice! Your careful approach reveals valuable secrets.", energy_change: 5, happiness_change: 15, item: "Ancient Map" },
-                      { message: "Your frog learns something important about forest magic!", energy_change: 0, happiness_change: 20 },
-                      { message: "Good thinking! You avoid danger and find a useful herb.", energy_change: 10, happiness_change: 10, item: "Healing Moss" },
-                      { message: "Your patience is rewarded with new magical knowledge.", energy_change: -5, happiness_change: 15 }
-                    ],
-                    low: [
-                      { message: "Safe and sound! Your cautious approach keeps everyone happy.", energy_change: 15, happiness_change: 10 },
-                      { message: "Smart choice! Sometimes the best adventure is staying safe.", energy_change: 20, happiness_change: 5 },
-                      { message: "Your frog appreciates the careful approach and feels well-rested.", energy_change: 25, happiness_change: 10 },
-                      { message: "A peaceful resolution. Your frog gains confidence from the safe choice.", energy_change: 10, happiness_change: 20 }
-                    ]
-                  }
-                  
-                  risk_level = risk.to_sym
-                  available_outcomes = outcomes[risk_level] || outcomes[:medium]
-                  outcome = available_outcomes.sample
-                  
-                  { 
-                    status: "success", 
-                    outcome: outcome
-                  }.to_json
+                  begin
+                    choice_params = JSON.parse(request.body.read)
+                    choice = choice_params["choice"] || {}
+                    scenario_id = choice_params["scenario_id"]
+                    frog_stats = choice_params["frog_stats"] || {}
+                    
+                    # Use LLM to generate contextual outcome
+                    llm_client = Frog::Adventure::Web::LLMClient.new
+                    outcome = llm_client.process_adventure_choice(
+                      scenario_id: scenario_id,
+                      choice: choice,
+                      frog_stats: frog_stats
+                    )
+                    
+                    if outcome
+                      # Convert OpenStruct to hash
+                      outcome_data = {
+                        message: outcome.message,
+                        energy_change: outcome.energy_change,
+                        happiness_change: outcome.happiness_change
+                      }
+                      outcome_data[:item] = outcome.item if outcome.respond_to?(:item) && outcome.item
+                      
+                      { 
+                        status: "success", 
+                        outcome: outcome_data
+                      }.to_json
+                    else
+                      # Fallback to simple outcome if LLM fails
+                      risk = choice["risk"] || "medium"
+                      fallback_outcomes = {
+                        high: { message: "Your bold action has consequences!", energy_change: -10, happiness_change: 5 },
+                        medium: { message: "A balanced choice yields balanced results.", energy_change: 0, happiness_change: 10 },
+                        low: { message: "Safe and sound, but nothing gained.", energy_change: 5, happiness_change: 5 }
+                      }
+                      
+                      outcome = fallback_outcomes[risk.to_sym] || fallback_outcomes[:medium]
+                      
+                      { 
+                        status: "success", 
+                        outcome: outcome,
+                        warning: "Using fallback outcome due to LLM error"
+                      }.to_json
+                    end
+                  rescue => e
+                    puts "Choice processing error: #{e.message}"
+                    status 500
+                    { status: "error", message: "Failed to process choice" }.to_json
+                  end
                 end
               end
               

@@ -1,57 +1,72 @@
+/Users/jeremy/frog-adventure-game/lib/frog/adventure/web/llm_client.rb:4: warning: ostruct was loaded from the standard library, but will no longer be part of the default gems starting from Ruby 3.5.0.
+You can add ostruct to your Gemfile or gemspec to silence this warning.
 Puma starting in single mode...
 * Puma version: 6.6.0 ("Return to Forever")
 * Ruby version: ruby 3.4.4 (2025-05-14 revision a38531fd3f) +PRISM [arm64-darwin24]
 *  Min threads: 0
 *  Max threads: 5
 *  Environment: development
-*          PID: 28077
-* Listening on http://0.0.0.0:4567
+*          PID: 36780
+* Listening on http://127.0.0.1:4567
+* Listening on http://[::1]:4567
 Use Ctrl-C to stop
-I, [2025-07-19T21:52:13.561933 #28077]  INFO -- : Started POST "/api/frog/generate" for 127.0.0.1
-I, [2025-07-19T21:52:13.563941 #28077]  INFO -- : Completed 200 in 2.02ms
-127.0.0.1 - - [19/Jul/2025:21:52:13 -0500] "POST /api/frog/generate HTTP/1.1" 200 - 0.0137
-I, [2025-07-19T21:52:18.887757 #28077]  INFO -- : Started POST "/api/frog/generate" for 127.0.0.1
-I, [2025-07-19T21:52:18.888254 #28077]  INFO -- : Completed 200 in 0.5ms
-127.0.0.1 - - [19/Jul/2025:21:52:18 -0500] "POST /api/frog/generate HTTP/1.1" 200 538 0.0012
-I, [2025-07-19T21:52:23.111651 #28077]  INFO -- : Started GET "/" for 127.0.0.1
-I, [2025-07-19T21:52:23.115736 #28077]  INFO -- : Completed 200 in 4.09ms
-127.0.0.1 - - [19/Jul/2025:21:52:23 -0500] "GET / HTTP/1.1" 200 - 0.0051
-I, [2025-07-19T21:52:23.122774 #28077]  INFO -- : Started GET "/health" for 127.0.0.1
-I, [2025-07-19T21:52:23.123110 #28077]  INFO -- : Completed 200 in 0.35ms
-127.0.0.1 - - [19/Jul/2025:21:52:23 -0500] "GET /health HTTP/1.1" 200 - 0.0013
-I, [2025-07-19T21:52:26.646888 #28077]  INFO -- : Started POST "/api/frog/generate" for 127.0.0.1
-I, [2025-07-19T21:52:26.647307 #28077]  INFO -- : Completed 200 in 0.47ms
-127.0.0.1 - - [19/Jul/2025:21:52:26 -0500] "POST /api/frog/generate HTTP/1.1" 200 - 0.0012
-I, [2025-07-19T21:52:50.170396 #28077]  INFO -- : Started POST "/api/frog/generate" for 127.0.0.1
-I, [2025-07-19T21:52:50.170749 #28077]  INFO -- : Completed 200 in 0.36ms
-127.0.0.1 - - [19/Jul/2025:21:52:50 -0500] "POST /api/frog/generate HTTP/1.1" 200 - 0.0010
-I, [2025-07-19T21:52:51.856362 #28077]  INFO -- : Started POST "/api/frog/generate" for 127.0.0.1
-I, [2025-07-19T21:52:51.857125 #28077]  INFO -- : Completed 200 in 0.77ms
-127.0.0.1 - - [19/Jul/2025:21:52:51 -0500] "POST /api/frog/generate HTTP/1.1" 200 - 0.0020
-I, [2025-07-19T21:52:52.992449 #28077]  INFO -- : Started POST "/api/frog/generate" for 127.0.0.1
-I, [2025-07-19T21:52:52.993463 #28077]  INFO -- : Completed 200 in 1.03ms
-127.0.0.1 - - [19/Jul/2025:21:52:52 -0500] "POST /api/frog/generate HTTP/1.1" 200 - 0.0027
-I, [2025-07-19T21:52:57.081493 #28077]  INFO -- : Started POST "/api/frog/generate" for 127.0.0.1
-I, [2025-07-19T21:52:57.081850 #28077]  INFO -- : Completed 200 in 0.36ms
-127.0.0.1 - - [19/Jul/2025:21:52:57 -0500] "POST /api/frog/generate HTTP/1.1" 200 - 0.0009
-I, [2025-07-19T21:53:03.306452 #28077]  INFO -- : Started POST "/api/frog/generate" for 127.0.0.1
-I, [2025-07-19T21:53:03.307604 #28077]  INFO -- : Completed 200 in 1.16ms
-127.0.0.1 - - [19/Jul/2025:21:53:03 -0500] "POST /api/frog/generate HTTP/1.1" 200 - 0.0029
-I, [2025-07-19T21:53:04.362547 #28077]  INFO -- : Started POST "/api/frog/generate" for 127.0.0.1
-I, [2025-07-19T21:53:04.363484 #28077]  INFO -- : Completed 200 in 0.94ms
-127.0.0.1 - - [19/Jul/2025:21:53:04 -0500] "POST /api/frog/generate HTTP/1.1" 200 - 0.0025
-I, [2025-07-19T21:54:05.019662 #28077]  INFO -- : Started POST "/api/frog/generate" for 127.0.0.1
-I, [2025-07-19T21:54:05.021563 #28077]  INFO -- : Completed 200 in 1.91ms
-127.0.0.1 - - [19/Jul/2025:21:54:05 -0500] "POST /api/frog/generate HTTP/1.1" 200 - 0.0027
-I, [2025-07-19T21:54:13.193019 #28077]  INFO -- : Started POST "/api/frog/generate" for 127.0.0.1
-I, [2025-07-19T21:54:13.194170 #28077]  INFO -- : Completed 200 in 1.17ms
-127.0.0.1 - - [19/Jul/2025:21:54:13 -0500] "POST /api/frog/generate HTTP/1.1" 200 - 0.0030
-I, [2025-07-19T21:54:14.242699 #28077]  INFO -- : Started POST "/api/frog/generate" for 127.0.0.1
-I, [2025-07-19T21:54:14.243125 #28077]  INFO -- : Completed 200 in 0.43ms
-127.0.0.1 - - [19/Jul/2025:21:54:14 -0500] "POST /api/frog/generate HTTP/1.1" 200 - 0.0012
-I, [2025-07-19T21:54:14.590676 #28077]  INFO -- : Started POST "/api/frog/generate" for 127.0.0.1
-I, [2025-07-19T21:54:14.591065 #28077]  INFO -- : Completed 200 in 0.39ms
-127.0.0.1 - - [19/Jul/2025:21:54:14 -0500] "POST /api/frog/generate HTTP/1.1" 200 - 0.0010
-I, [2025-07-19T21:54:15.422491 #28077]  INFO -- : Started POST "/api/frog/generate" for 127.0.0.1
-I, [2025-07-19T21:54:15.423275 #28077]  INFO -- : Completed 200 in 0.79ms
-127.0.0.1 - - [19/Jul/2025:21:54:15 -0500] "POST /api/frog/generate HTTP/1.1" 200 - 0.0023
+DEBUG: Querying LLM with prompt length: 1021
+DEBUG: Sending request to Ollama...
+DEBUG: Got response from Ollama: 200
+DEBUG: Generated text (1456 chars)
+::1 - - [20/Jul/2025:19:49:01 -0500] "POST /api/frog/generate HTTP/1.1" 200 - 8.1066
+DEBUG: Querying LLM with prompt length: 1010
+DEBUG: Sending request to Ollama...
+DEBUG: Got response from Ollama: 200
+DEBUG: Generated text (1334 chars)
+::1 - - [20/Jul/2025:19:49:10 -0500] "POST /api/frog/generate HTTP/1.1" 200 - 8.1538
+DEBUG: Querying LLM with prompt length: 1011
+DEBUG: Sending request to Ollama...
+DEBUG: Got response from Ollama: 200
+DEBUG: Generated text (1261 chars)
+::1 - - [20/Jul/2025:19:49:18 -0500] "POST /api/frog/generate HTTP/1.1" 200 - 7.2532
+DEBUG: Querying LLM with prompt length: 1003
+DEBUG: Sending request to Ollama...
+DEBUG: Got response from Ollama: 200
+DEBUG: Generated text (1228 chars)
+::1 - - [20/Jul/2025:19:49:26 -0500] "POST /api/frog/generate HTTP/1.1" 200 - 7.3920
+DEBUG: Querying LLM with prompt length: 1028
+DEBUG: Sending request to Ollama...
+DEBUG: Got response from Ollama: 200
+DEBUG: Generated text (1104 chars)
+::1 - - [20/Jul/2025:19:49:33 -0500] "POST /api/frog/generate HTTP/1.1" 200 - 6.8047
+DEBUG: Querying LLM with prompt length: 1003
+DEBUG: Sending request to Ollama...
+DEBUG: Got response from Ollama: 200
+DEBUG: Generated text (1409 chars)
+::1 - - [20/Jul/2025:19:49:42 -0500] "POST /api/frog/generate HTTP/1.1" 200 - 8.6110
+DEBUG: Querying LLM with prompt length: 1006
+DEBUG: Sending request to Ollama...
+DEBUG: Got response from Ollama: 200
+DEBUG: Generated text (1356 chars)
+::1 - - [20/Jul/2025:19:49:53 -0500] "POST /api/frog/generate HTTP/1.1" 200 - 10.2440
+DEBUG: Querying LLM with prompt length: 1020
+DEBUG: Sending request to Ollama...
+DEBUG: Got response from Ollama: 200
+DEBUG: Generated text (1557 chars)
+::1 - - [20/Jul/2025:19:50:04 -0500] "POST /api/frog/generate HTTP/1.1" 200 - 10.5615
+DEBUG: Querying LLM with prompt length: 1013
+DEBUG: Sending request to Ollama...
+DEBUG: Got response from Ollama: 200
+DEBUG: Generated text (1224 chars)
+::1 - - [20/Jul/2025:19:50:13 -0500] "POST /api/frog/generate HTTP/1.1" 200 - 9.0573
+DEBUG: Querying LLM with prompt length: 1008
+DEBUG: Sending request to Ollama...
+DEBUG: Got response from Ollama: 200
+DEBUG: Generated text (1210 chars)
+::1 - - [20/Jul/2025:19:50:24 -0500] "POST /api/frog/generate HTTP/1.1" 200 - 9.9993
+DEBUG: Querying LLM with prompt length: 1266
+DEBUG: Sending request to Ollama...
+DEBUG: Got response from Ollama: 200
+DEBUG: Generated text (1898 chars)
+::1 - - [20/Jul/2025:19:50:40 -0500] "POST /api/adventure/start HTTP/1.1" 200 - 15.7120
+DEBUG: Querying LLM with prompt length: 1266
+DEBUG: Sending request to Ollama...
+DEBUG: Got response from Ollama: 200
+DEBUG: Generated text (1558 chars)
+::1 - - [20/Jul/2025:19:50:54 -0500] "POST /api/adventure/start HTTP/1.1" 200 - 13.5101
