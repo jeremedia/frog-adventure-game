@@ -25,7 +25,7 @@ module Frog
       class App < Sinatra::Base
         # Register extensions
         register Sinatra::Namespace
-        
+        disable :protection
         # Apply middleware configuration
         # Web::Middleware.configure(self) # TODO: Fix load order
         
@@ -50,9 +50,8 @@ module Frog
               same_site: :lax,
               httponly: true
           
-          # Security settings
-          enable :protection
-          set :protection, except: [:json_csrf]
+          # Security settings - completely disable protection for now to allow domain access
+          set :protection, false
           
           # Logging
           enable :logging
@@ -72,6 +71,9 @@ module Frog
           enable :raise_errors
           
           set :show_exceptions, :after_handler
+          
+          # Disable protection completely in development to allow external domains
+          set :protection, false
           
           # Development-specific logging
           logger.level = Logger::DEBUG

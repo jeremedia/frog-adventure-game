@@ -117,7 +117,24 @@ class GameUI {
       return;
     }
     
+    // Get the button and disable it
+    const startBtn = document.getElementById('start-adventure-btn');
+    if (startBtn) {
+      startBtn.disabled = true;
+      startBtn.classList.add('loading');
+      startBtn.innerHTML = '<span class="spinner"></span> Loading Adventure...';
+    }
+    
     this.addLogEntry('Starting a new adventure...');
+    
+    // Show loading message in scenario area
+    const titleEl = document.getElementById('scenario-title');
+    const textEl = document.getElementById('scenario-text');
+    const choicesEl = document.getElementById('choices-container');
+    
+    if (titleEl) titleEl.textContent = 'Loading...';
+    if (textEl) textEl.innerHTML = '<p>Your frog is discovering a new adventure...</p>';
+    if (choicesEl) choicesEl.innerHTML = '';
     
     try {
       const response = await fetch('/api/adventure/start', {
@@ -139,6 +156,12 @@ class GameUI {
         this.updateStatusBars();
       } else {
         this.showMessage('Failed to start adventure. Please try again.', 'error');
+        // Re-enable button on error
+        if (startBtn) {
+          startBtn.disabled = false;
+          startBtn.classList.remove('loading');
+          startBtn.innerHTML = 'Begin Adventure';
+        }
       }
     } catch (error) {
       console.error('Adventure error:', error);
@@ -310,6 +333,8 @@ class GameUI {
     startBtn.id = 'start-adventure-btn';
     startBtn.className = 'choice-button primary';
     startBtn.textContent = 'Begin Adventure';
+    startBtn.disabled = false;
+    startBtn.classList.remove('loading');
     startBtn.addEventListener('click', () => this.startAdventure());
     choicesEl.appendChild(startBtn);
   }

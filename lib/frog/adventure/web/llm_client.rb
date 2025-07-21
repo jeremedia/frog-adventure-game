@@ -374,22 +374,6 @@ module Frog
           OpenStruct.new(scenario)
         end
 
-        # Process an adventure choice and return outcome using LLM
-        def process_adventure_choice(scenario_id:, choice:, frog_stats: {})
-          prompt = build_choice_outcome_prompt(choice, frog_stats)
-          
-          begin
-            llm_response = query_llm(prompt)
-            outcome_data = parse_choice_outcome(llm_response)
-            outcome_data[:scenario_id] = scenario_id
-            outcome_data[:choice_made] = choice
-            return OpenStruct.new(outcome_data)
-          rescue => e
-            puts "LLM choice processing failed: #{e.message}"
-            return generate_fallback_outcome(choice, scenario_id)
-          end
-        end
-
         def build_choice_outcome_prompt(choice, frog_stats)
           strength = frog_stats[:strength] || 10
           agility = frog_stats[:agility] || 10

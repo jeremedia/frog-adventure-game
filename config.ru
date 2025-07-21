@@ -17,7 +17,7 @@ use Rack::ETag # Add ETag headers
 # if defined?(Rack::RequestId)
 #   use Rack::RequestId
 # end
-
+# Host authorization disabled - handled in Sinatra app configuration
 # Enable runtime monitoring in production
 if ENV["RACK_ENV"] == "production" && defined?(Rack::Runtime)
   use Rack::Runtime
