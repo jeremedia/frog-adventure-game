@@ -14,6 +14,8 @@ require "logger"
 require "securerandom"
 require "dotenv/load"
 
+require_relative "models"
+require_relative "llm_client"
 require_relative "routes"
 require_relative "middleware"
 

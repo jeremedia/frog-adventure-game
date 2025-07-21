@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 require "ruby_llm"
+require "ostruct"
+require "securerandom"
 
 module Frog
   module Adventure
@@ -25,13 +27,16 @@ module Frog
           
           prompt = build_frog_generation_prompt(frog_type, base_frog.stats, base_frog.traits)
           
-          begin
-            response = query_llm(prompt)
-            return parse_frog_response(response, frog_type, base_frog.stats, base_frog.traits)
-          rescue => e
-            # Fallback to procedural generation if LLM fails
-            return generate_fallback_frog(frog_type, base_frog.stats, base_frog.traits)
-          end
+          # Temporarily use fallback while debugging LLM integration
+          return generate_fallback_frog(frog_type, base_frog.stats, base_frog.traits)
+          
+          # TODO: Re-enable LLM generation after fixing configuration
+          # begin
+          #   response = query_llm(prompt)
+          #   return parse_frog_response(response, frog_type, base_frog.stats, base_frog.traits)
+          # rescue => e
+          #   return generate_fallback_frog(frog_type, base_frog.stats, base_frog.traits)
+          # end
         end
 
         # Generate an adventure scenario
@@ -47,13 +52,47 @@ module Frog
           nil
         end
 
+        # Make adventure methods public since they're used in routes
+        def generate_adventure_scenario(frog_stats: {})
+          prompt = build_adventure_scenario_prompt(frog_stats)
+          
+          begin
+            llm_response = query_llm(prompt)
+            scenario_data = parse_adventure_scenario(llm_response)
+            scenario_data[:id] = SecureRandom.uuid
+            return OpenStruct.new(scenario_data)
+          rescue => e
+            puts "LLM adventure generation failed: #{e.message}"
+            return generate_fallback_scenario
+          end
+        end
+
+        def process_adventure_choice(scenario_id:, choice:, frog_stats: {})
+          prompt = build_choice_outcome_prompt(choice, frog_stats)
+          
+          begin
+            llm_response = query_llm(prompt)
+            outcome_data = parse_choice_outcome(llm_response)
+            outcome_data[:scenario_id] = scenario_id
+            outcome_data[:choice_made] = choice
+            return OpenStruct.new(outcome_data)
+          rescue => e
+            puts "LLM choice processing failed: #{e.message}"
+            return generate_fallback_outcome(choice, scenario_id)
+          end
+        end
+
         private
 
         def configure_llm
-          # Configure rubyllm based on environment
-          # Support multiple providers (OpenAI, Anthropic, Ollama, etc.)
+          # Configure ruby_llm to use Ollama for local LLM generation
+          # Following https://rubyllm.com/configuration#ollama-api-base-ollama_api_base
           RubyLLM.configure do |config|
-            # Provider configuration will be added based on ENV
+            config.provider = :ollama
+            config.ollama_api_base = "http://localhost:11434"
+            config.model = "gemma3n:e4b"
+            config.temperature = 0.8
+            config.timeout = 30
           end
         end
 
@@ -88,8 +127,29 @@ module Frog
         end
 
         def query_llm(prompt)
-          # For now, return a randomized mock response until we have actual LLM integration
-          # This will be replaced with actual rubyllm calls
+          # Use RubyLLM to query Ollama
+          begin
+            response = RubyLLM.call(prompt)
+            return response.strip
+          rescue => e
+            # Fallback to mock data if LLM fails
+            puts "LLM call failed: #{e.message}"
+            return generate_mock_response(prompt)
+          end
+        end
+
+        def generate_mock_response(prompt)
+          # Fallback mock responses when LLM is unavailable
+          if prompt.include?("adventure scenario")
+            return generate_mock_scenario
+          elsif prompt.include?("companion frog")
+            return generate_mock_frog
+          else
+            return "{\"error\": \"Mock response not implemented for this prompt type\"}"
+          end
+        end
+
+        def generate_mock_frog
           mock_frogs = [
             {
               "name" => "Sparky",
@@ -198,6 +258,199 @@ module Frog
             stats: stats,
             traits: traits
           )
+        end
+
+
+        def build_adventure_scenario_prompt(frog_stats)
+          strength = frog_stats[:strength] || 10
+          agility = frog_stats[:agility] || 10
+          intelligence = frog_stats[:intelligence] || 10
+          magic = frog_stats[:magic] || 10
+          luck = frog_stats[:luck] || 10
+          
+          <<~PROMPT
+            Create a unique adventure scenario for a frog companion in a magical forest roguelike game.
+            
+            **Frog Stats**: Strength #{strength}, Agility #{agility}, Intelligence #{intelligence}, Magic #{magic}, Luck #{luck}
+            
+            Generate an exciting scenario that could utilize the frog's abilities. The scenario should:
+            - Be appropriate for the frog's stat levels (higher stats = more dangerous/complex scenarios)
+            - Include exactly 3 meaningful choices with different risk levels
+            - Have vivid descriptions that create atmosphere
+            - Offer opportunities for different approaches based on different stats
+            
+            Respond ONLY with valid JSON in this exact format:
+            {
+              "title": "Short descriptive title",
+              "description": "Detailed scenario description that sets the scene and creates tension",
+              "choices": [
+                {"id": 1, "text": "Action-oriented choice description", "risk": "high"},
+                {"id": 2, "text": "Cautious/clever choice description", "risk": "medium"},
+                {"id": 3, "text": "Safe/retreat choice description", "risk": "low"}
+              ]
+            }
+
+            Make it creative and immersive! Examples of good scenarios:
+            - Ancient ruins with mysterious glowing symbols
+            - Strange creatures blocking the path  
+            - Magical phenomena or environmental hazards
+            - Social encounters with other forest inhabitants
+            - Hidden treasures with protective enchantments
+          PROMPT
+        end
+
+        def parse_adventure_scenario(llm_response)
+          # Try to extract JSON from LLM response
+          json_match = llm_response.match(/\{.*\}/m)
+          if json_match
+            JSON.parse(json_match[0], symbolize_names: true)
+          else
+            raise "No valid JSON found in LLM response"
+          end
+        end
+
+        def generate_fallback_scenario
+          fallback_scenarios = [
+            {
+              id: SecureRandom.uuid,
+              title: "The Mysterious Lily Pad",
+              description: "You discover a glowing lily pad in the middle of the pond. It seems magical but potentially dangerous.",
+              choices: [
+                { id: 1, text: "Jump onto the lily pad", risk: "medium" },
+                { id: 2, text: "Investigate from a safe distance", risk: "low" },
+                { id: 3, text: "Swim away quickly", risk: "none" }
+              ]
+            },
+            {
+              id: SecureRandom.uuid,
+              title: "The Singing Cricket",
+              description: "A cricket approaches and begins singing a haunting melody. Other frogs seem mesmerized by it.",
+              choices: [
+                { id: 1, text: "Listen to the full song", risk: :high },
+                { id: 2, text: "Sing along with the cricket", risk: :medium },
+                { id: 3, text: "Cover your ears and hop away", risk: :low }
+              ]
+            },
+            {
+              id: SecureRandom.uuid,
+              title: "The Golden Fly",
+              description: "A shimmering golden fly buzzes just out of reach. It looks delicious but seems too good to be true.",
+              choices: [
+                { id: 1, text: "Leap high to catch it", risk: :medium },
+                { id: 2, text: "Wait for it to come closer", risk: :low },
+                { id: 3, text: "Look for other food instead", risk: :none }
+              ]
+            }
+          ]
+
+          scenario = scenarios.sample
+          
+          # Create a simple scenario struct
+          OpenStruct.new(scenario)
+        end
+
+        # Process an adventure choice and return outcome using LLM
+        def process_adventure_choice(scenario_id:, choice:, frog_stats: {})
+          prompt = build_choice_outcome_prompt(choice, frog_stats)
+          
+          begin
+            llm_response = query_llm(prompt)
+            outcome_data = parse_choice_outcome(llm_response)
+            outcome_data[:scenario_id] = scenario_id
+            outcome_data[:choice_made] = choice
+            return OpenStruct.new(outcome_data)
+          rescue => e
+            puts "LLM choice processing failed: #{e.message}"
+            return generate_fallback_outcome(choice, scenario_id)
+          end
+        end
+
+        def build_choice_outcome_prompt(choice, frog_stats)
+          strength = frog_stats[:strength] || 10
+          agility = frog_stats[:agility] || 10
+          intelligence = frog_stats[:intelligence] || 10
+          magic = frog_stats[:magic] || 10
+          luck = frog_stats[:luck] || 10
+          risk = choice["risk"] || "medium"
+          
+          <<~PROMPT
+            Process the outcome of an adventure choice for a frog companion.
+            
+            **Choice Made**: "#{choice["text"]}"
+            **Risk Level**: #{risk}
+            **Frog Stats**: Strength #{strength}, Agility #{agility}, Intelligence #{intelligence}, Magic #{magic}, Luck #{luck}
+            
+            Generate a narrative outcome that:
+            - Reflects the risk level (high risk = more dramatic results, both good and bad)
+            - Considers the frog's stats (higher relevant stats = better success chance)
+            - Provides meaningful consequences (energy/happiness changes, possible items)
+            - Tells a compelling micro-story of what happened
+            
+            Respond ONLY with valid JSON:
+            {
+              "message": "Detailed description of what happened and the result",
+              "energy_change": -15 to +15 (integer, negative loses energy),
+              "happiness_change": -15 to +20 (integer, negative loses happiness),
+              "item": "Item name or null" (only sometimes, like "Ancient Key" or "Magic Berry")
+            }
+
+            Guidelines for stat influence:
+            - High Strength: Better physical challenges, fighting, lifting
+            - High Agility: Better dodging, climbing, quick reactions  
+            - High Intelligence: Better puzzles, social situations, planning
+            - High Magic: Better magical interactions, spells, enchanted items
+            - High Luck: Better random outcomes, finding things, avoiding traps
+
+            Risk level effects:
+            - Low: Mostly positive outcomes, small changes
+            - Medium: Mixed outcomes, moderate changes
+            - High: Dramatic outcomes (very good or very bad), large changes
+          PROMPT
+        end
+
+        def parse_choice_outcome(llm_response)
+          json_match = llm_response.match(/\{.*\}/m)
+          if json_match
+            JSON.parse(json_match[0], symbolize_names: true)
+          else
+            raise "No valid JSON found in LLM response"
+          end
+        end
+
+        def generate_fallback_outcome(choice, scenario_id)
+          outcomes = {
+            success: [
+              { message: "Success! You gained valuable experience.", energy_change: 5, happiness_change: 15 },
+              { message: "Well done! You discovered a hidden treasure.", energy_change: 0, happiness_change: 20, item: "Shiny Pebble" },
+              { message: "Excellent choice! You feel more confident.", energy_change: 10, happiness_change: 10 }
+            ],
+            partial: [
+              { message: "You succeeded partially but learned something new.", energy_change: -5, happiness_change: 10 },
+              { message: "It worked out okay, though not perfectly.", energy_change: 0, happiness_change: 5 }
+            ],
+            failure: [
+              { message: "That didn't go as planned, but you're wiser now.", energy_change: -10, happiness_change: -5 },
+              { message: "Oops! Better luck next time.", energy_change: -15, happiness_change: 0 },
+              { message: "You learned what not to do next time.", energy_change: -5, happiness_change: -10 }
+            ]
+          }
+
+          risk_level = choice["risk"] || "medium"
+          outcome_type = case risk_level.to_s
+          when "none", "low"
+            [:success, :partial].sample
+          when "medium"
+            [:success, :partial, :failure].sample
+          when "high"
+            [:partial, :failure].sample
+          else
+            :partial
+          end
+
+          result = outcomes[outcome_type].sample
+          result[:scenario_id] = scenario_id
+          result[:choice_made] = choice
+          OpenStruct.new(result)
         end
       end
     end

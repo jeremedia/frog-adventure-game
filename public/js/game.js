@@ -132,6 +132,7 @@ class GameUI {
       const result = await response.json();
       
       if (result.status === 'success') {
+        this.currentScenario = result.scenario;
         this.displayScenario(result.scenario);
         this.gameState.energy -= 20;
         this.gameState.adventures += 1;
@@ -201,8 +202,52 @@ class GameUI {
       btn.style.opacity = '0.5';
     });
     
-    // Simulate outcome (replace with actual API call)
-    setTimeout(() => {
+    try {
+      // Make real API call to process choice
+      const response = await fetch('/api/adventure/choice', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          scenario_id: this.currentScenario?.id,
+          choice: { id: choiceId, risk: 'medium' },
+          frog_stats: this.currentFrog?.stats || {}
+        })
+      });
+      
+      const result = await response.json();
+      
+      if (result.status === 'success') {
+        const outcome = result.outcome;
+        this.showOutcome(outcome.message);
+        
+        // Update stats based on outcome
+        if (outcome.energy_change) {
+          this.gameState.energy = Math.max(0, Math.min(100, this.gameState.energy + outcome.energy_change));
+        }
+        if (outcome.happiness_change) {
+          this.gameState.happiness = Math.max(0, Math.min(100, this.gameState.happiness + outcome.happiness_change));
+        }
+        if (outcome.item) {
+          this.gameState.inventory.push(outcome.item);
+          this.updateInventory();
+        }
+        
+        this.updateStatusBars();
+        
+        // Show continue button
+        const choicesEl = document.getElementById('choices-container');
+        choicesEl.innerHTML = '';
+        const continueBtn = document.createElement('button');
+        continueBtn.className = 'choice-button primary';
+        continueBtn.textContent = 'Continue Adventure';
+        continueBtn.addEventListener('click', () => this.continueAdventure());
+        choicesEl.appendChild(continueBtn);
+      } else {
+        this.showMessage('Failed to process choice. Please try again.', 'error');
+      }
+    } catch (error) {
+      console.error('Choice error:', error);
+      // Fallback to demo outcome
       const outcomes = [
         "You found a magical lily pad! +10 happiness!",
         "You discovered ancient frog wisdom! +5 intelligence!",
@@ -230,7 +275,7 @@ class GameUI {
       continueBtn.textContent = 'Continue Adventure';
       continueBtn.addEventListener('click', () => this.continueAdventure());
       choicesEl.appendChild(continueBtn);
-    }, 1000);
+    }
   }
 
   showOutcome(outcome) {

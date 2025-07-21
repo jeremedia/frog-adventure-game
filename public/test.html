@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Test Start Adventure Button</title>
+</head>
+<body>
+    <h1>Testing Start Adventure Button</h1>
+    <p>Steps to see the Start Adventure button:</p>
+    <ol>
+        <li>Go to <a href="http://localhost:4567/">http://localhost:4567/</a></li>
+        <li>Click "Generate Random Frog" button</li>
+        <li>Wait for the frog to be generated</li>
+        <li>Scroll down below the frog card</li>
+        <li>You should see the "Start Adventure" button</li>
+    </ol>
+    
+    <h2>Quick Test</h2>
+    <button onclick="testButton()">Show Hidden Button</button>
+    <button id="test-start-game" style="display: none;" onclick="alert('Button works!')">Start Adventure</button>
+    
+    <script>
+        function testButton() {
+            document.getElementById('test-start-game').style.display = 'block';
+        }
+    </script>
+</body>
+</html>

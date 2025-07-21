@@ -1,0 +1,18 @@
+{
+  "name": "frog-adventure-tests",
+  "version": "1.0.0",
+  "description": "Automated testing for Frog Adventure Game",
+  "main": "run-game-test.js",
+  "scripts": {
+    "test": "node run-game-test.js",
+    "test:headless": "HEADLESS=true node run-game-test.js",
+    "install-playwright": "npx playwright install chromium"
+  },
+  "dependencies": {
+    "playwright": "^1.40.0"
+  },
+  "devDependencies": {},
+  "keywords": ["testing", "playwright", "game", "automation"],
+  "author": "Claude Code",
+  "license": "MIT"
+}

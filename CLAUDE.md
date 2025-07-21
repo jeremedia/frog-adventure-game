@@ -23,14 +23,26 @@ python3 frog_adventure.py
 # Install dependencies
 bundle install
 
-# Run development server
-bundle exec rackup
+# Run development server (background)
+bundle exec rackup -p 4567 -D
+
+# Run development server (foreground, blocking)
+bundle exec rackup -p 4567
+
+# Stop background server
+pkill -f "rackup.*4567"
+
+# Check if server is running
+lsof -i :4567
 
 # Run tests
 bundle exec rspec
 
 # Run linter
 bundle exec rubocop
+
+# Run automated game tests
+cd tests && npm test
 ```
 
 ## Architecture Overview

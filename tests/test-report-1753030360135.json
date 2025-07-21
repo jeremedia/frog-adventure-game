@@ -1,0 +1,284 @@
+{
+  "testRunId": 1753030301525,
+  "startTime": "2025-07-20T16:51:41.525Z",
+  "endTime": "2025-07-20T16:52:40.135Z",
+  "duration": "59 seconds",
+  "totalTests": 44,
+  "errors": 1,
+  "successes": 3,
+  "screenshots": 9,
+  "results": [
+    {
+      "timestamp": "2025-07-20T16:51:41.551Z",
+      "message": "Starting frog generation test...",
+      "type": "info"
+    },
+    {
+      "timestamp": "2025-07-20T16:51:42.225Z",
+      "message": "Screenshot captured: 01-homepage",
+      "type": "info"
+    },
+    {
+      "timestamp": "2025-07-20T16:51:42.233Z",
+      "message": "Clicking Generate Random Frog button...",
+      "type": "info"
+    },
+    {
+      "timestamp": "2025-07-20T16:51:45.794Z",
+      "message": "Frog generated successfully: Rocky (Rain Frog)",
+      "type": "success"
+    },
+    {
+      "timestamp": "2025-07-20T16:51:45.928Z",
+      "message": "Screenshot captured: 02-frog-generated",
+      "type": "info"
+    },
+    {
+      "timestamp": "2025-07-20T16:51:47.055Z",
+      "message": "Screenshot captured: 03-start-button-visible",
+      "type": "info"
+    },
+    {
+      "timestamp": "2025-07-20T16:51:47.055Z",
+      "message": "Testing game navigation...",
+      "type": "info"
+    },
+    {
+      "timestamp": "2025-07-20T16:51:47.057Z",
+      "message": "Clicking Start Adventure button...",
+      "type": "info"
+    },
+    {
+      "timestamp": "2025-07-20T16:51:49.743Z",
+      "message": "Screenshot captured: 04-game-ui-loaded",
+      "type": "info"
+    },
+    {
+      "timestamp": "2025-07-20T16:51:49.745Z",
+      "message": "All game UI elements present",
+      "type": "success"
+    },
+    {
+      "timestamp": "2025-07-20T16:51:49.745Z",
+      "message": "Testing adventure flow...",
+      "type": "info"
+    },
+    {
+      "timestamp": "2025-07-20T16:51:51.752Z",
+      "message": "Initial game state - Energy: 100, Happiness: 75",
+      "type": "info"
+    },
+    {
+      "timestamp": "2025-07-20T16:51:51.756Z",
+      "message": "Clicking Begin Adventure...",
+      "type": "info"
+    },
+    {
+      "timestamp": "2025-07-20T16:51:54.417Z",
+      "message": "Screenshot captured: 05-adventure-started",
+      "type": "info"
+    },
+    {
+      "timestamp": "2025-07-20T16:51:54.419Z",
+      "message": "Found 1 choice buttons",
+      "type": "success"
+    },
+    {
+      "timestamp": "2025-07-20T16:51:54.419Z",
+      "message": "Making adventure choice...",
+      "type": "info"
+    },
+    {
+      "timestamp": "2025-07-20T16:51:57.047Z",
+      "message": "Screenshot captured: 06-choice-made",
+      "type": "info"
+    },
+    {
+      "timestamp": "2025-07-20T16:51:57.048Z",
+      "message": "After choice - Energy: 100, Happiness: 75",
+      "type": "info"
+    },
+    {
+      "timestamp": "2025-07-20T16:51:57.048Z",
+      "message": "Testing quick actions...",
+      "type": "info"
+    },
+    {
+      "timestamp": "2025-07-20T16:51:57.051Z",
+      "message": "Testing Feed action...",
+      "type": "info"
+    },
+    {
+      "timestamp": "2025-07-20T16:51:58.683Z",
+      "message": "Screenshot captured: 07-after-feed",
+      "type": "info"
+    },
+    {
+      "timestamp": "2025-07-20T16:51:58.685Z",
+      "message": "Testing Play action...",
+      "type": "info"
+    },
+    {
+      "timestamp": "2025-07-20T16:52:00.220Z",
+      "message": "Play action - Happiness: 95",
+      "type": "info"
+    },
+    {
+      "timestamp": "2025-07-20T16:52:00.317Z",
+      "message": "Screenshot captured: 08-after-play",
+      "type": "info"
+    },
+    {
+      "timestamp": "2025-07-20T16:52:00.318Z",
+      "message": "Testing Rest action...",
+      "type": "info"
+    },
+    {
+      "timestamp": "2025-07-20T16:52:01.852Z",
+      "message": "Rest action - Energy: 100",
+      "type": "info"
+    },
+    {
+      "timestamp": "2025-07-20T16:52:01.960Z",
+      "message": "Screenshot captured: 09-after-rest",
+      "type": "info"
+    },
+    {
+      "timestamp": "2025-07-20T16:52:01.960Z",
+      "message": "Testing multiple adventures...",
+      "type": "info"
+    },
+    {
+      "timestamp": "2025-07-20T16:52:01.962Z",
+      "message": "Starting adventure 1...",
+      "type": "info"
+    },
+    {
+      "timestamp": "2025-07-20T16:52:04.503Z",
+      "message": "Starting adventure 1...",
+      "type": "info"
+    },
+    {
+      "timestamp": "2025-07-20T16:52:07.046Z",
+      "message": "Starting adventure 1...",
+      "type": "info"
+    },
+    {
+      "timestamp": "2025-07-20T16:52:09.594Z",
+      "message": "Starting adventure 1...",
+      "type": "info"
+    },
+    {
+      "timestamp": "2025-07-20T16:52:12.149Z",
+      "message": "Starting adventure 1...",
+      "type": "info"
+    },
+    {
+      "timestamp": "2025-07-20T16:52:14.693Z",
+      "message": "Starting adventure 1...",
+      "type": "info"
+    },
+    {
+      "timestamp": "2025-07-20T16:52:17.239Z",
+      "message": "Starting adventure 1...",
+      "type": "info"
+    },
+    {
+      "timestamp": "2025-07-20T16:52:19.781Z",
+      "message": "Starting adventure 1...",
+      "type": "info"
+    },
+    {
+      "timestamp": "2025-07-20T16:52:22.335Z",
+      "message": "Starting adventure 1...",
+      "type": "info"
+    },
+    {
+      "timestamp": "2025-07-20T16:52:24.883Z",
+      "message": "Starting adventure 1...",
+      "type": "info"
+    },
+    {
+      "timestamp": "2025-07-20T16:52:27.422Z",
+      "message": "Starting adventure 1...",
+      "type": "info"
+    },
+    {
+      "timestamp": "2025-07-20T16:52:29.974Z",
+      "message": "Starting adventure 1...",
+      "type": "info"
+    },
+    {
+      "timestamp": "2025-07-20T16:52:32.517Z",
+      "message": "Starting adventure 1...",
+      "type": "info"
+    },
+    {
+      "timestamp": "2025-07-20T16:52:35.051Z",
+      "message": "Starting adventure 1...",
+      "type": "info"
+    },
+    {
+      "timestamp": "2025-07-20T16:52:37.589Z",
+      "message": "Starting adventure 1...",
+      "type": "info"
+    },
+    {
+      "timestamp": "2025-07-20T16:52:40.135Z",
+      "message": "Multiple adventures test failed: page.waitForTimeout: Target page, context or browser has been closed",
+      "type": "error"
+    },
+    {
+      "timestamp": "2025-07-20T16:52:40.135Z",
+      "message": "Test report generated: 3 successes, 1 errors",
+      "type": "info"
+    }
+  ],
+  "screenshotList": [
+    {
+      "name": "01-homepage",
+      "description": "Initial homepage load",
+      "timestamp": "2025-07-20T16:51:42.225Z"
+    },
+    {
+      "name": "02-frog-generated",
+      "description": "Frog successfully generated",
+      "timestamp": "2025-07-20T16:51:45.928Z"
+    },
+    {
+      "name": "03-start-button-visible",
+      "description": "Start Adventure button visible",
+      "timestamp": "2025-07-20T16:51:47.055Z"
+    },
+    {
+      "name": "04-game-ui-loaded",
+      "description": "Game UI loaded successfully",
+      "timestamp": "2025-07-20T16:51:49.743Z"
+    },
+    {
+      "name": "05-adventure-started",
+      "description": "Adventure scenario loaded",
+      "timestamp": "2025-07-20T16:51:54.417Z"
+    },
+    {
+      "name": "06-choice-made",
+      "description": "Adventure choice made",
+      "timestamp": "2025-07-20T16:51:57.047Z"
+    },
+    {
+      "name": "07-after-feed",
+      "description": "After feeding frog",
+      "timestamp": "2025-07-20T16:51:58.683Z"
+    },
+    {
+      "name": "08-after-play",
+      "description": "After playing with frog",
+      "timestamp": "2025-07-20T16:52:00.317Z"
+    },
+    {
+      "name": "09-after-rest",
+      "description": "After resting frog",
+      "timestamp": "2025-07-20T16:52:01.960Z"
+    }
+  ]
+}
