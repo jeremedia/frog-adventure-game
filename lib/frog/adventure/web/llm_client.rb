@@ -293,21 +293,59 @@ module Frog
           magic = frog_stats[:magic] || 10
           luck = frog_stats[:luck] || 10
           
+          # Randomly select diverse settings and themes for variety
+          settings = [
+            "mystical crystal caverns deep underground",
+            "floating sky islands connected by rainbow bridges", 
+            "abandoned clockwork city with mechanical guardians",
+            "underwater coral palace beneath the lake",
+            "volcanic fire realm with lava flows and ember sprites",
+            "frozen ice kingdom with aurora magic",
+            "desert oasis surrounded by sand wyrms",
+            "ancient library tower filled with living books",
+            "mushroom forest with giant fungi and spore clouds",
+            "starlit meadow where dreams become reality",
+            "windswept mountain peaks with storm giants",
+            "enchanted marketplace between dimensions"
+          ]
+          
+          themes = [
+            "mysterious artifact discovery",
+            "rival adventurer encounter", 
+            "natural disaster or magical phenomenon",
+            "ancient puzzle or riddle challenge",
+            "trapped creature needing rescue",
+            "guardian spirit testing worthiness",
+            "time distortion or dimensional rift",
+            "cursed treasure with moral dilemma",
+            "lost civilization remnants",
+            "shapeshifting trickster encounter",
+            "elemental imbalance threatening the realm",
+            "memory-stealing enchantment"
+          ]
+          
+          setting = settings.sample
+          theme = themes.sample
+          
           <<~PROMPT
-            Create a unique adventure scenario for a frog companion in a magical forest roguelike game.
+            Create a completely unique adventure scenario for a frog companion exploring diverse magical realms.
             
+            **Setting**: #{setting}
+            **Theme**: #{theme}
             **Frog Stats**: Strength #{strength}, Agility #{agility}, Intelligence #{intelligence}, Magic #{magic}, Luck #{luck}
             
-            Generate an exciting scenario that could utilize the frog's abilities. The scenario should:
+            Generate an exciting scenario that combines the setting and theme in an unexpected way. The scenario should:
+            - Use the specific setting and theme provided above (NOT a generic forest)
             - Be appropriate for the frog's stat levels (higher stats = more dangerous/complex scenarios)
             - Include exactly 3 meaningful choices with different risk levels
-            - Have vivid descriptions that create atmosphere
+            - Have vivid descriptions that create atmosphere unique to this setting
             - Offer opportunities for different approaches based on different stats
+            - Be completely different from "Whispering Glade" or any forest scenario
             
             Respond ONLY with valid JSON in this exact format:
             {
-              "title": "Short descriptive title",
-              "description": "Detailed scenario description that sets the scene and creates tension",
+              "title": "Short descriptive title incorporating the setting",
+              "description": "Detailed scenario description that sets the scene in the specified setting and incorporates the theme",
               "choices": [
                 {"id": 1, "text": "Action-oriented choice description", "risk": "high"},
                 {"id": 2, "text": "Cautious/clever choice description", "risk": "medium"},
@@ -315,12 +353,7 @@ module Frog
               ]
             }
 
-            Make it creative and immersive! Examples of good scenarios:
-            - Ancient ruins with mysterious glowing symbols
-            - Strange creatures blocking the path  
-            - Magical phenomena or environmental hazards
-            - Social encounters with other forest inhabitants
-            - Hidden treasures with protective enchantments
+            IMPORTANT: Make this scenario completely unique and avoid any forest, glade, or woodland themes!
           PROMPT
         end
 
