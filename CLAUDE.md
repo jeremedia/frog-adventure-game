@@ -166,6 +166,29 @@ The web application includes an interactive frog companion preview system that a
 
 This feature provides immediate visual feedback and demonstrates the game's frog generation system without requiring full gameplay implementation.
 
+### Adventure Loading Indication
+The game UI includes comprehensive loading states for LLM-powered adventure generation:
+
+**Key Features:**
+- **Button State Management**: "Begin Adventure" button is disabled during LLM calls with loading spinner
+- **Visual Feedback**: Loading message displays in scenario area: "Your frog is discovering a new adventure..."
+- **Error Recovery**: Button re-enables on API failures with proper error messaging
+- **CSS Animations**: Smooth loading spinner with fade animations
+- **State Consistency**: resetToStart() ensures proper button state restoration
+
+**Technical Implementation:**
+- **Loading States**: CSS classes for `.btn.loading` with disabled cursor and opacity
+- **Spinner Animation**: Keyframe animation for rotating loading indicator
+- **JavaScript**: Async/await patterns with comprehensive error handling
+- **Cache-busting**: Timestamp parameters on CSS/JS to prevent browser caching issues
+
+**Production Deployment:**
+- **External Domain Access**: Configured for https://frog.zice.app via Caddy reverse proxy
+- **Host Authorization**: Disabled Rack::Protection in development/production for domain access
+- **Server Configuration**: Binds to 100.104.170.10:4567 with production environment settings
+
+This enhancement addresses the long lag during LLM generation (10-15 seconds) by providing immediate visual feedback and preventing user confusion.
+
 ## Multi-Agent Collaboration Protocol
 
 ### Starting Work
