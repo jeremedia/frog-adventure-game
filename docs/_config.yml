@@ -1,0 +1,22 @@
+# GitHub Pages Configuration for Frog Adventure
+title: Frog Adventure
+description: AI-Powered Roguelike Adventure Game with Infinite Possibilities
+theme: 
+baseurl: "/frog-adventure-game"
+url: "https://jeremedia.github.io"
+
+# SEO
+tagline: Experience infinite adventures with AI-generated frog companions
+author: Jeremy
+twitter:
+  card: summary_large_image
+
+# Social
+github_username: jeremedia
+repository: jeremedia/frog-adventure-game
+
+# Build settings
+markdown: kramdown
+plugins:
+  - jekyll-seo-tag
+  - jekyll-sitemap

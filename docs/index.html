@@ -1,0 +1,703 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Frog Adventure - AI-Powered Roguelike Adventure</title>
+    <meta name="description" content="Experience infinite adventures with your AI-generated frog companion. A roguelike where your frog's stats dramatically change every adventure!">
+    
+    <!-- Open Graph Meta Tags -->
+    <meta property="og:title" content="Frog Adventure - AI-Powered Roguelike">
+    <meta property="og:description" content="Experience infinite adventures with your AI-generated frog companion">
+    <meta property="og:image" content="https://jeremedia.github.io/frog-adventure-game/images/og-image.png">
+    <meta property="og:url" content="https://jeremedia.github.io/frog-adventure-game/">
+    <meta property="og:type" content="website">
+    
+    <!-- Twitter Card Meta Tags -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Frog Adventure - AI-Powered Roguelike">
+    <meta name="twitter:description" content="Experience infinite adventures with your AI-generated frog companion">
+    <meta name="twitter:image" content="https://jeremedia.github.io/frog-adventure-game/images/og-image.png">
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/x-icon" href="favicon.ico">
+    
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;600;700&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --primary-color: #22c55e;
+            --secondary-color: #16a34a;
+            --accent-color: #fbbf24;
+            --background-color: #f0fdf4;
+            --text-color: #1f2937;
+            --card-bg: #ffffff;
+            --shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            --max-width: 1200px;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Kanit', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            line-height: 1.6;
+            color: var(--text-color);
+            background-color: var(--background-color);
+            overflow-x: hidden;
+        }
+
+        /* Header */
+        header {
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            padding: 1rem 0;
+            box-shadow: var(--shadow);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        nav {
+            max-width: var(--max-width);
+            margin: 0 auto;
+            padding: 0 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 1.8rem;
+            font-weight: 700;
+            text-decoration: none;
+            color: white;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+            list-style: none;
+        }
+
+        .nav-links a {
+            color: white;
+            text-decoration: none;
+            font-weight: 400;
+            transition: opacity 0.3s;
+        }
+
+        .nav-links a:hover {
+            opacity: 0.8;
+        }
+
+        /* Hero Section */
+        .hero {
+            background: linear-gradient(135deg, #065f46, #047857);
+            color: white;
+            padding: 4rem 2rem;
+            min-height: 60vh;
+            display: flex;
+            align-items: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255,255,255,0.1) 1px, transparent 1px);
+            background-size: 50px 50px;
+            animation: float 20s linear infinite;
+        }
+
+        @keyframes float {
+            0% { transform: translate(0, 0); }
+            100% { transform: translate(50px, 50px); }
+        }
+
+        .hero-content {
+            max-width: var(--max-width);
+            margin: 0 auto;
+            position: relative;
+            z-index: 1;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+            align-items: center;
+        }
+
+        .hero-text h1 {
+            font-size: 3.5rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            line-height: 1.2;
+        }
+
+        .hero-text p {
+            font-size: 1.3rem;
+            margin-bottom: 2rem;
+            opacity: 0.95;
+        }
+
+        .hero-buttons {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 1rem 2rem;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s;
+            border: none;
+            cursor: pointer;
+            font-size: 1.1rem;
+        }
+
+        .btn-primary {
+            background: var(--accent-color);
+            color: var(--text-color);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 16px rgba(251, 191, 36, 0.4);
+        }
+
+        .btn-secondary {
+            background: transparent;
+            color: white;
+            border: 2px solid white;
+        }
+
+        .btn-secondary:hover {
+            background: white;
+            color: var(--primary-color);
+        }
+
+        .hero-image {
+            position: relative;
+        }
+
+        .frog-mascot {
+            width: 100%;
+            max-width: 400px;
+            height: auto;
+            animation: hop 2s ease-in-out infinite;
+        }
+
+        @keyframes hop {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-20px); }
+        }
+
+        /* Features Section */
+        .features {
+            padding: 4rem 2rem;
+            background: white;
+        }
+
+        .container {
+            max-width: var(--max-width);
+            margin: 0 auto;
+        }
+
+        .section-title {
+            text-align: center;
+            font-size: 2.5rem;
+            color: var(--secondary-color);
+            margin-bottom: 3rem;
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+
+        .feature-card {
+            background: var(--card-bg);
+            padding: 2rem;
+            border-radius: 16px;
+            box-shadow: var(--shadow);
+            transition: transform 0.3s, box-shadow 0.3s;
+            border: 2px solid transparent;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+            border-color: var(--primary-color);
+        }
+
+        .feature-icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+        }
+
+        .feature-card h3 {
+            color: var(--secondary-color);
+            margin-bottom: 0.5rem;
+            font-size: 1.5rem;
+        }
+
+        .feature-card p {
+            color: #6b7280;
+            line-height: 1.6;
+        }
+
+        /* Stats Section */
+        .stats {
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            padding: 3rem 2rem;
+            text-align: center;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 2rem;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .stat-item {
+            padding: 1rem;
+        }
+
+        .stat-number {
+            font-size: 3rem;
+            font-weight: 700;
+            display: block;
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-label {
+            font-size: 1.1rem;
+            opacity: 0.9;
+        }
+
+        /* How to Play Section */
+        .how-to-play {
+            padding: 4rem 2rem;
+            background: var(--background-color);
+        }
+
+        .steps-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+
+        .step {
+            text-align: center;
+            padding: 1rem;
+        }
+
+        .step-number {
+            width: 60px;
+            height: 60px;
+            background: var(--primary-color);
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin: 0 auto 1rem;
+        }
+
+        .step h3 {
+            color: var(--secondary-color);
+            margin-bottom: 0.5rem;
+        }
+
+        /* Screenshots Section */
+        .screenshots {
+            padding: 4rem 2rem;
+            background: white;
+        }
+
+        .screenshot-gallery {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+
+        .screenshot {
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: var(--shadow);
+            transition: transform 0.3s;
+        }
+
+        .screenshot:hover {
+            transform: scale(1.05);
+        }
+
+        .screenshot img {
+            width: 100%;
+            height: auto;
+            display: block;
+        }
+
+        /* CTA Section */
+        .cta {
+            background: linear-gradient(135deg, #065f46, #047857);
+            color: white;
+            padding: 4rem 2rem;
+            text-align: center;
+        }
+
+        .cta h2 {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .cta p {
+            font-size: 1.2rem;
+            margin-bottom: 2rem;
+            opacity: 0.95;
+        }
+
+        /* Footer */
+        footer {
+            background: #1f2937;
+            color: white;
+            padding: 3rem 2rem 2rem;
+        }
+
+        .footer-content {
+            max-width: var(--max-width);
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 3rem;
+            margin-bottom: 2rem;
+        }
+
+        .footer-section h3 {
+            margin-bottom: 1rem;
+            color: var(--accent-color);
+        }
+
+        .footer-section ul {
+            list-style: none;
+        }
+
+        .footer-section ul li {
+            margin-bottom: 0.5rem;
+        }
+
+        .footer-section a {
+            color: #9ca3af;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+
+        .footer-section a:hover {
+            color: var(--primary-color);
+        }
+
+        .footer-bottom {
+            text-align: center;
+            padding-top: 2rem;
+            border-top: 1px solid #374151;
+            color: #6b7280;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .hero-content {
+                grid-template-columns: 1fr;
+                text-align: center;
+            }
+
+            .hero-text h1 {
+                font-size: 2.5rem;
+            }
+
+            .hero-image {
+                order: -1;
+            }
+
+            .nav-links {
+                display: none;
+            }
+
+            .frog-mascot {
+                max-width: 250px;
+            }
+        }
+
+        /* Placeholder for frog SVG */
+        .frog-placeholder {
+            width: 100%;
+            max-width: 400px;
+            height: 400px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 8rem;
+            margin: 0 auto;
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <nav>
+            <a href="#" class="logo">
+                <span>🐸</span> Frog Adventure
+            </a>
+            <ul class="nav-links">
+                <li><a href="#features">Features</a></li>
+                <li><a href="#how-to-play">How to Play</a></li>
+                <li><a href="https://github.com/jeremedia/frog-adventure-game">GitHub</a></li>
+                <li><a href="https://frog.zice.app" class="btn btn-primary" style="padding: 0.5rem 1.5rem;">Play Now</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="hero-content">
+            <div class="hero-text">
+                <h1>Infinite Adventures with AI-Generated Frogs</h1>
+                <p>Experience a roguelike where your companion frog's stats dramatically change every adventure through the magic of AI</p>
+                <div class="hero-buttons">
+                    <a href="https://frog.zice.app" class="btn btn-primary">🎮 Play Now</a>
+                    <a href="https://github.com/jeremedia/frog-adventure-game" class="btn btn-secondary">View on GitHub</a>
+                </div>
+            </div>
+            <div class="hero-image">
+                <div class="frog-placeholder">🐸</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section class="features" id="features">
+        <div class="container">
+            <h2 class="section-title">Game Features</h2>
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">🤖</div>
+                    <h3>AI-Generated Companions</h3>
+                    <p>Every frog is unique with procedurally generated stats, abilities, and backstories created by advanced language models</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">🎲</div>
+                    <h3>144+ Adventure Combinations</h3>
+                    <p>Explore crystal caverns, sky islands, clockwork cities, and more with dynamically generated scenarios</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">⚡</div>
+                    <h3>Stat-Based Gameplay</h3>
+                    <p>Your frog's Strength, Agility, Intelligence, Magic, and Luck dramatically affect available choices and outcomes</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">💚</div>
+                    <h3>Virtual Pet Mechanics</h3>
+                    <p>Manage your frog's energy and happiness through feeding, playing, and resting between adventures</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">🎨</div>
+                    <h3>Narrative Pipeline</h3>
+                    <p>Adventures transform into text narratives, storyboards, and screenplays through AI generation</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">🌐</div>
+                    <h3>Open Source</h3>
+                    <p>Built with Ruby, Sinatra, and Ollama LLM. Contribute to the project on GitHub!</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Stats Section -->
+    <section class="stats">
+        <div class="container">
+            <div class="stats-grid">
+                <div class="stat-item">
+                    <span class="stat-number">∞</span>
+                    <span class="stat-label">Unique Adventures</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-number">12</span>
+                    <span class="stat-label">Magical Realms</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-number">5</span>
+                    <span class="stat-label">Frog Stats</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-number">100%</span>
+                    <span class="stat-label">AI-Powered</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- How to Play Section -->
+    <section class="how-to-play" id="how-to-play">
+        <div class="container">
+            <h2 class="section-title">How to Play</h2>
+            <div class="steps-grid">
+                <div class="step">
+                    <div class="step-number">1</div>
+                    <h3>Generate Your Frog</h3>
+                    <p>Click to create a unique AI-generated companion with random stats and abilities</p>
+                </div>
+                <div class="step">
+                    <div class="step-number">2</div>
+                    <h3>Start Adventure</h3>
+                    <p>Begin an AI-generated scenario tailored to your frog's unique capabilities</p>
+                </div>
+                <div class="step">
+                    <div class="step-number">3</div>
+                    <h3>Make Choices</h3>
+                    <p>Select from risk-based options that utilize your frog's different stats</p>
+                </div>
+                <div class="step">
+                    <div class="step-number">4</div>
+                    <h3>Manage Resources</h3>
+                    <p>Keep your frog happy and energized through feeding, playing, and resting</p>
+                </div>
+                <div class="step">
+                    <div class="step-number">5</div>
+                    <h3>Explore & Repeat</h3>
+                    <p>Every adventure is unique! Discover new realms and challenges</p>
+                </div>
+                <div class="step">
+                    <div class="step-number">6</div>
+                    <h3>Create Stories</h3>
+                    <p>Adventures transform into narratives and screenplays through AI magic</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Screenshots Section -->
+    <section class="screenshots">
+        <div class="container">
+            <h2 class="section-title">Game Screenshots</h2>
+            <div class="screenshot-gallery">
+                <div class="screenshot">
+                    <img src="images/screenshot-home.png" alt="Frog Adventure Homepage" />
+                </div>
+                <div class="screenshot">
+                    <img src="images/screenshot-game.png" alt="Game Interface" />
+                </div>
+                <div class="screenshot">
+                    <img src="images/screenshot-adventure.png" alt="Adventure Scenario" />
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="cta">
+        <div class="container">
+            <h2>Ready for Your Frog Adventure?</h2>
+            <p>Join thousands of players exploring infinite AI-generated worlds</p>
+            <div class="hero-buttons">
+                <a href="https://frog.zice.app" class="btn btn-primary">🐸 Start Playing</a>
+                <a href="https://github.com/jeremedia/frog-adventure-game" class="btn btn-secondary">⭐ Star on GitHub</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="footer-content">
+            <div class="footer-section">
+                <h3>About</h3>
+                <p>Frog Adventure is an AI-powered roguelike where your companion's stats dramatically change every adventure.</p>
+            </div>
+            <div class="footer-section">
+                <h3>Links</h3>
+                <ul>
+                    <li><a href="https://frog.zice.app">Play Game</a></li>
+                    <li><a href="https://github.com/jeremedia/frog-adventure-game">GitHub Repository</a></li>
+                    <li><a href="https://github.com/jeremedia/frog-adventure-game/issues">Report Issues</a></li>
+                    <li><a href="https://github.com/jeremedia/frog-adventure-game/blob/main/README.md">Documentation</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h3>Technologies</h3>
+                <ul>
+                    <li><a href="https://www.ruby-lang.org/">Ruby</a></li>
+                    <li><a href="http://sinatrarb.com/">Sinatra</a></li>
+                    <li><a href="https://ollama.ai/">Ollama LLM</a></li>
+                    <li><a href="https://claude.ai/code">Claude Code</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h3>Creator</h3>
+                <p>Built with ❤️ and 🐸 by <a href="https://github.com/jeremedia">Jeremy</a> using AI-assisted development</p>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2025 Frog Adventure. Open source under MIT License.</p>
+        </div>
+    </footer>
+
+    <script>
+        // Smooth scrolling for navigation links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+
+        // Add some interactive animations
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = '0';
+                    entry.target.style.transform = 'translateY(20px)';
+                    setTimeout(() => {
+                        entry.target.style.transition = 'all 0.6s ease-out';
+                        entry.target.style.opacity = '1';
+                        entry.target.style.transform = 'translateY(0)';
+                    }, 100);
+                }
+            });
+        }, { threshold: 0.1 });
+
+        // Observe all feature cards and steps
+        document.querySelectorAll('.feature-card, .step').forEach(el => {
+            observer.observe(el);
+        });
+    </script>
+</body>
+</html>

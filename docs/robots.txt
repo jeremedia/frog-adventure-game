@@ -1,0 +1,5 @@
+# Robots.txt for Frog Adventure
+User-agent: *
+Allow: /
+
+Sitemap: https://jeremedia.github.io/frog-adventure-game/sitemap.xml
