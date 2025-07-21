@@ -91,13 +91,34 @@ body {
   animation: hop 2s ease-in-out infinite;
 }
 
+/* Hero Section */
+.hero-section {
+  background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+  color: white;
+  padding: 3rem 2rem;
+  border-radius: 16px;
+  margin-bottom: 2rem;
+  box-shadow: 0 8px 24px rgba(34, 197, 94, 0.3);
+}
+
+.hero-content h2 {
+  font-size: 2.5rem;
+  margin-bottom: 1rem;
+}
+
+.hero-content p {
+  font-size: 1.2rem;
+  opacity: 0.95;
+}
+
 /* Frog Preview Section */
 .frog-preview-section {
   margin: 2rem 0;
   padding: 2rem;
-  background: linear-gradient(135deg, var(--background-color), #ecfdf5);
-  border-radius: 12px;
-  border: 2px solid var(--secondary-color);
+  background: var(--card-bg);
+  border-radius: 16px;
+  box-shadow: var(--shadow);
+  position: relative;
 }
 
 .frog-controls {
@@ -386,4 +407,105 @@ body {
   .stat-label {
     min-width: 100px;
   }
+}
+
+/* Generation Step */
+.generation-step {
+  margin-bottom: 2rem;
+}
+
+/* Adventure Controls */
+.adventure-controls {
+  background: linear-gradient(135deg, #f0fdf4, #dcfce7);
+  border: 2px solid var(--primary-color);
+  border-radius: 16px;
+  padding: 2rem;
+  margin: 2rem 0;
+  text-align: center;
+  animation: fadeIn 0.5s ease-in;
+}
+
+.adventure-ready h3 {
+  color: var(--secondary-color);
+  font-size: 1.8rem;
+  margin-bottom: 1rem;
+}
+
+.adventure-ready p {
+  font-size: 1.1rem;
+  margin-bottom: 1.5rem;
+  color: #374151;
+}
+
+.action-buttons {
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.btn-large {
+  font-size: 1.2rem;
+  padding: 1rem 2rem;
+}
+
+.btn-secondary {
+  background: #6b7280;
+  color: white;
+}
+
+.btn-secondary:hover {
+  background: #4b5563;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(107, 114, 128, 0.3);
+}
+
+/* Features Section */
+.features-section {
+  margin: 4rem 0;
+  text-align: center;
+}
+
+.features-section h2 {
+  color: var(--secondary-color);
+  font-size: 2rem;
+  margin-bottom: 2rem;
+}
+
+.features-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 2rem;
+  margin-top: 2rem;
+}
+
+.feature-card {
+  background: var(--card-bg);
+  padding: 2rem;
+  border-radius: 12px;
+  box-shadow: var(--shadow);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.feature-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+}
+
+.feature-icon {
+  font-size: 3rem;
+  display: block;
+  margin-bottom: 1rem;
+}
+
+.feature-card h3 {
+  color: var(--primary-color);
+  margin-bottom: 0.5rem;
+  font-size: 1.3rem;
+}
+
+.feature-card p {
+  color: #6b7280;
+  font-size: 0.95rem;
+  line-height: 1.5;
 }

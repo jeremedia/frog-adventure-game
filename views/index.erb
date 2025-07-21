@@ -3,21 +3,29 @@
   <p>Welcome to the web version of Frog Adventure!</p>
   <p>A roguelike adventure where your companion frog's stats dramatically change your journey!</p>
   
+  <div class="hero-section">
+    <div class="hero-content">
+      <h2>🎲 Your Adventure Begins Here</h2>
+      <p>Generate a unique frog companion with dynamic stats, abilities, and personality!</p>
+    </div>
+  </div>
+  
   <div class="frog-preview-section">
-    <h2>🎲 Preview Your Frog Companion</h2>
-    <p>See how our enhanced frog generation system creates unique companions with stats, traits, and personalities!</p>
     
-    <div class="frog-controls">
-      <button id="generate-frog" class="btn btn-primary">Generate Random Frog</button>
-      <select id="frog-type-selector" class="form-select">
-        <option value="">Random Type</option>
-        <option value="Tree Frog">Tree Frog (Agile)</option>
-        <option value="Poison Dart Frog">Poison Dart Frog (Smart & Quick)</option>
-        <option value="Bullfrog">Bullfrog (Strong)</option>
-        <option value="Glass Frog">Glass Frog (Magical & Wise)</option>
-        <option value="Rocket Frog">Rocket Frog (Super Fast)</option>
-        <option value="Rain Frog">Rain Frog (Intelligent & Lucky)</option>
-      </select>
+    <!-- Generation Controls -->
+    <div class="generation-step" id="generation-controls">
+      <div class="frog-controls">
+        <button id="generate-frog" class="btn btn-primary btn-large">🎲 Generate Random Frog</button>
+        <select id="frog-type-selector" class="form-select">
+          <option value="">Random Type</option>
+          <option value="Tree Frog">Tree Frog (Agile)</option>
+          <option value="Poison Dart Frog">Poison Dart Frog (Smart & Quick)</option>
+          <option value="Bullfrog">Bullfrog (Strong)</option>
+          <option value="Glass Frog">Glass Frog (Magical & Wise)</option>
+          <option value="Rocket Frog">Rocket Frog (Super Fast)</option>
+          <option value="Rain Frog">Rain Frog (Intelligent & Lucky)</option>
+        </select>
+      </div>
     </div>
     
     <div id="frog-display" class="frog-card hidden">
@@ -100,16 +108,39 @@
       <div class="spinner"></div>
       <p>Generating your frog companion...</p>
     </div>
+    
+    <!-- Adventure Controls -->
+    <div class="adventure-controls hidden" id="adventure-controls">
+      <div class="adventure-ready">
+        <h3>✨ Your Frog is Ready!</h3>
+        <p>Time to begin your adventure with your new companion.</p>
+        <div class="action-buttons">
+          <button id="start-adventure" class="btn btn-primary btn-large">🎮 Start Adventure</button>
+          <button id="regenerate-frog" class="btn btn-secondary">🔄 Generate New Frog</button>
+        </div>
+      </div>
+    </div>
   </div>
   
-  <div class="game-status">
-    <h2>Development Status</h2>
-    <p>Phase 1: Infrastructure Setup ✅</p>
-    <p>Phase 2.5: Enhanced Frog Generation ✅</p>
-    <p>Phase 3: Adventure System (In Progress)</p>
-    <p>Phase 4: Narrative Generation (Planned)</p>
-    <p>Phase 5: Polish & Launch (Planned)</p>
+  <!-- Game Features -->
+  <div class="features-section">
+    <h2>🌟 Game Features</h2>
+    <div class="features-grid">
+      <div class="feature-card">
+        <span class="feature-icon">🐸</span>
+        <h3>Dynamic Frogs</h3>
+        <p>Each frog is uniquely generated with personality-driven abilities</p>
+      </div>
+      <div class="feature-card">
+        <span class="feature-icon">🗺️</span>
+        <h3>Endless Adventures</h3>
+        <p>AI-generated scenarios that adapt to your frog's strengths</p>
+      </div>
+      <div class="feature-card">
+        <span class="feature-icon">📖</span>
+        <h3>Rich Narratives</h3>
+        <p>Your choices shape unique stories every playthrough</p>
+      </div>
+    </div>
   </div>
-  
-  <button id="start-game" class="btn btn-primary" style="display: none;">Start Adventure</button>
 </div>

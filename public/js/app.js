@@ -23,10 +23,22 @@ class FrogAdventureGame {
       startButton.addEventListener('click', () => this.startNewGame());
     }
 
+    // New adventure button
+    const startAdventureButton = document.getElementById('start-adventure');
+    if (startAdventureButton) {
+      startAdventureButton.addEventListener('click', () => this.startNewGame());
+    }
+
     // Frog generation controls
     const generateButton = document.getElementById('generate-frog');
     if (generateButton) {
       generateButton.addEventListener('click', () => this.generateRandomFrog());
+    }
+
+    // Regenerate frog button
+    const regenerateButton = document.getElementById('regenerate-frog');
+    if (regenerateButton) {
+      regenerateButton.addEventListener('click', () => this.generateRandomFrog());
     }
   }
 
@@ -80,6 +92,8 @@ class FrogAdventureGame {
   }
 
   displayFrog(frog) {
+    console.log('displayFrog called with:', frog);
+    
     // Update frog header
     document.getElementById('frog-name').textContent = frog.name;
     document.getElementById('frog-type').textContent = frog.type;
@@ -105,11 +119,15 @@ class FrogAdventureGame {
     // Show the frog card
     this.showFrogDisplay();
     
-    // Show Start Adventure button
-    const startButton = document.getElementById('start-game');
-    if (startButton) {
-      startButton.style.display = 'block';
-      startButton.style.marginTop = '2rem';
+    // Show adventure controls section
+    console.log('About to show adventure controls...');
+    const adventureControls = document.getElementById('adventure-controls');
+    console.log('Adventure controls element:', adventureControls);
+    if (adventureControls) {
+      console.log('Removing hidden class from adventure controls');
+      adventureControls.classList.remove('hidden');
+    } else {
+      console.error('Adventure controls element not found!');
     }
   }
 

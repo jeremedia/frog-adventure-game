@@ -6,67 +6,30 @@ Puma starting in single mode...
 *  Min threads: 0
 *  Max threads: 5
 *  Environment: development
-*          PID: 36780
+*          PID: 43109
 * Listening on http://127.0.0.1:4567
 * Listening on http://[::1]:4567
 Use Ctrl-C to stop
-DEBUG: Querying LLM with prompt length: 1021
-DEBUG: Sending request to Ollama...
-DEBUG: Got response from Ollama: 200
-DEBUG: Generated text (1456 chars)
-::1 - - [20/Jul/2025:19:49:01 -0500] "POST /api/frog/generate HTTP/1.1" 200 - 8.1066
-DEBUG: Querying LLM with prompt length: 1010
-DEBUG: Sending request to Ollama...
-DEBUG: Got response from Ollama: 200
-DEBUG: Generated text (1334 chars)
-::1 - - [20/Jul/2025:19:49:10 -0500] "POST /api/frog/generate HTTP/1.1" 200 - 8.1538
-DEBUG: Querying LLM with prompt length: 1011
-DEBUG: Sending request to Ollama...
-DEBUG: Got response from Ollama: 200
-DEBUG: Generated text (1261 chars)
-::1 - - [20/Jul/2025:19:49:18 -0500] "POST /api/frog/generate HTTP/1.1" 200 - 7.2532
-DEBUG: Querying LLM with prompt length: 1003
-DEBUG: Sending request to Ollama...
-DEBUG: Got response from Ollama: 200
-DEBUG: Generated text (1228 chars)
-::1 - - [20/Jul/2025:19:49:26 -0500] "POST /api/frog/generate HTTP/1.1" 200 - 7.3920
-DEBUG: Querying LLM with prompt length: 1028
-DEBUG: Sending request to Ollama...
-DEBUG: Got response from Ollama: 200
-DEBUG: Generated text (1104 chars)
-::1 - - [20/Jul/2025:19:49:33 -0500] "POST /api/frog/generate HTTP/1.1" 200 - 6.8047
-DEBUG: Querying LLM with prompt length: 1003
-DEBUG: Sending request to Ollama...
-DEBUG: Got response from Ollama: 200
-DEBUG: Generated text (1409 chars)
-::1 - - [20/Jul/2025:19:49:42 -0500] "POST /api/frog/generate HTTP/1.1" 200 - 8.6110
-DEBUG: Querying LLM with prompt length: 1006
-DEBUG: Sending request to Ollama...
-DEBUG: Got response from Ollama: 200
-DEBUG: Generated text (1356 chars)
-::1 - - [20/Jul/2025:19:49:53 -0500] "POST /api/frog/generate HTTP/1.1" 200 - 10.2440
-DEBUG: Querying LLM with prompt length: 1020
-DEBUG: Sending request to Ollama...
-DEBUG: Got response from Ollama: 200
-DEBUG: Generated text (1557 chars)
-::1 - - [20/Jul/2025:19:50:04 -0500] "POST /api/frog/generate HTTP/1.1" 200 - 10.5615
-DEBUG: Querying LLM with prompt length: 1013
-DEBUG: Sending request to Ollama...
-DEBUG: Got response from Ollama: 200
-DEBUG: Generated text (1224 chars)
-::1 - - [20/Jul/2025:19:50:13 -0500] "POST /api/frog/generate HTTP/1.1" 200 - 9.0573
-DEBUG: Querying LLM with prompt length: 1008
-DEBUG: Sending request to Ollama...
-DEBUG: Got response from Ollama: 200
-DEBUG: Generated text (1210 chars)
-::1 - - [20/Jul/2025:19:50:24 -0500] "POST /api/frog/generate HTTP/1.1" 200 - 9.9993
-DEBUG: Querying LLM with prompt length: 1266
-DEBUG: Sending request to Ollama...
-DEBUG: Got response from Ollama: 200
-DEBUG: Generated text (1898 chars)
-::1 - - [20/Jul/2025:19:50:40 -0500] "POST /api/adventure/start HTTP/1.1" 200 - 15.7120
-DEBUG: Querying LLM with prompt length: 1266
-DEBUG: Sending request to Ollama...
-DEBUG: Got response from Ollama: 200
-DEBUG: Generated text (1558 chars)
-::1 - - [20/Jul/2025:19:50:54 -0500] "POST /api/adventure/start HTTP/1.1" 200 - 13.5101
+Session cookie encryptor error: HMAC is invalid
+::1 - - [20/Jul/2025:20:00:10 -0500] "GET / HTTP/1.1" 304 - 0.0106
+::1 - - [20/Jul/2025:20:00:10 -0500] "GET /health HTTP/1.1" 200 - 0.0009
+::1 - - [20/Jul/2025:20:01:08 -0500] "POST /api/frog/generate HTTP/1.1" 200 - 9.9424
+::1 - - [20/Jul/2025:20:05:31 -0500] "POST /api/frog/generate HTTP/1.1" 200 - 9.2149
+::1 - - [20/Jul/2025:20:36:18 -0500] "GET / HTTP/1.1" 200 - 0.0045
+::1 - - [20/Jul/2025:20:36:18 -0500] "GET /health HTTP/1.1" 200 - 0.0012
+::1 - - [20/Jul/2025:20:36:33 -0500] "POST /api/frog/generate HTTP/1.1" 200 - 12.7138
+::1 - - [20/Jul/2025:20:37:46 -0500] "GET / HTTP/1.1" 304 - 0.0049
+::1 - - [20/Jul/2025:20:37:46 -0500] "GET /health HTTP/1.1" 200 - 0.0025
+::1 - - [20/Jul/2025:20:37:59 -0500] "POST /api/frog/generate HTTP/1.1" 200 - 8.2172
+::1 - - [20/Jul/2025:20:40:17 -0500] "POST /api/frog/generate HTTP/1.1" 200 - 9.3569
+::1 - - [20/Jul/2025:20:47:39 -0500] "GET / HTTP/1.1" 304 - 0.0068
+::1 - - [20/Jul/2025:20:47:39 -0500] "GET /health HTTP/1.1" 200 - 0.0009
+::1 - - [20/Jul/2025:20:48:09 -0500] "POST /api/frog/generate HTTP/1.1" 200 - 13.2718
+::1 - - [20/Jul/2025:20:49:24 -0500] "GET /?v=2 HTTP/1.1" 200 - 0.0041
+::1 - - [20/Jul/2025:20:49:24 -0500] "GET /health HTTP/1.1" 200 - 0.0008
+::1 - - [20/Jul/2025:20:49:42 -0500] "POST /api/frog/generate HTTP/1.1" 200 - 9.6547
+::1 - - [20/Jul/2025:20:51:06 -0500] "GET / HTTP/1.1" 200 - 0.0039
+::1 - - [20/Jul/2025:20:51:06 -0500] "GET /js/app.js?v=1753062666 HTTP/1.1" 200 - 0.0013
+::1 - - [20/Jul/2025:20:51:06 -0500] "GET /health HTTP/1.1" 200 - 0.0007
+::1 - - [20/Jul/2025:20:51:37 -0500] "POST /api/frog/generate HTTP/1.1" 200 - 7.9021
+::1 - - [20/Jul/2025:20:52:50 -0500] "POST /api/frog/generate HTTP/1.1" 200 - 7.3570

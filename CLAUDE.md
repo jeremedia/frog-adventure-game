@@ -2,6 +2,53 @@
 
 This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
 
+## CRITICAL: Screenshot Requirements for Web Development
+
+**THIS IS MANDATORY - NOT OPTIONAL**
+
+When developing ANY web UI features, you MUST follow these screenshot practices:
+
+### 1. Take Screenshots at Key Points
+- **Before any UI change**: Capture the current state
+- **After making changes**: Capture the new state
+- **After user interactions**: Capture results of clicks, form submissions, etc.
+- **When investigating issues**: Always screenshot the actual state
+
+### 2. ALWAYS Load and View Screenshots
+- **NEVER assume what a screenshot shows**
+- **ALWAYS use the Read tool to load the screenshot file immediately after taking it**
+- **ALWAYS analyze what you actually see, not what you expect to see**
+- Example workflow:
+  ```
+  1. Take screenshot: mcp__playwright__playwright_screenshot
+  2. Load screenshot: Read tool with the saved file path
+  3. Analyze: Look at the actual visual output step-by-step
+  4. Verify: Compare what you see against what was intended
+  ```
+
+### 3. Screenshot Analysis Checklist
+When viewing a screenshot, systematically check:
+- [ ] Are all expected elements visible?
+- [ ] Are elements in the correct positions?
+- [ ] Do buttons/links appear clickable?
+- [ ] Are there any unexpected gaps or overlaps?
+- [ ] Does the layout match the intended design?
+- [ ] Are there any error messages or console errors visible?
+
+### 4. Why This Matters
+- **You are building for HUMANS who will SEE the interface**
+- **Code changes don't guarantee visual results**
+- **Hidden elements, CSS conflicts, and JavaScript errors are only visible through screenshots**
+- **Assumptions about UI state lead to broken user experiences**
+
+### 5. Common Pitfalls to Avoid
+- ❌ Taking screenshots but not viewing them
+- ❌ Assuming code changes worked without visual verification
+- ❌ Claiming to see elements that aren't actually visible
+- ❌ Not checking browser console for errors when UI doesn't work
+
+### Remember: If you haven't looked at a screenshot, you haven't verified the UI!
+
 ## Project Overview
 Frog Adventure Web - A Ruby gem-based roguelike web application where frog companion stats dramatically change adventures, transforming gameplay into AI-generated cartoons.
 
