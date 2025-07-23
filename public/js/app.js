@@ -15,6 +15,18 @@ class FrogAdventureGame {
     this.setupEventListeners();
     this.checkGameStatus();
   }
+  
+  getLLMConfig() {
+    const configStr = localStorage.getItem('frog_adventure_llm_config');
+    if (configStr) {
+      try {
+        return JSON.parse(configStr);
+      } catch (e) {
+        console.error('Failed to parse LLM config:', e);
+      }
+    }
+    return null;
+  }
 
   setupEventListeners() {
     // Add event listeners for game controls
@@ -62,8 +74,14 @@ class FrogAdventureGame {
       const typeSelector = document.getElementById('frog-type-selector');
       const selectedType = typeSelector ? typeSelector.value : '';
 
-      // Prepare request body
+      // Prepare request body with LLM config
       const requestBody = selectedType ? { frog_type: selectedType } : {};
+      
+      // Include LLM config if available
+      const llmConfig = this.getLLMConfig();
+      if (llmConfig) {
+        requestBody.llm_config = llmConfig;
+      }
 
       const response = await fetch('/api/frog/generate', {
         method: 'POST',

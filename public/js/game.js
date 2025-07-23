@@ -19,6 +19,18 @@ class GameUI {
     this.loadCurrentFrog();
     this.updateStatusBars();
   }
+  
+  getLLMConfig() {
+    const configStr = localStorage.getItem('frog_adventure_llm_config');
+    if (configStr) {
+      try {
+        return JSON.parse(configStr);
+      } catch (e) {
+        console.error('Failed to parse LLM config:', e);
+      }
+    }
+    return null;
+  }
 
   setupEventListeners() {
     // Start Adventure button
@@ -137,13 +149,22 @@ class GameUI {
     if (choicesEl) choicesEl.innerHTML = '';
     
     try {
+      // Prepare request body with LLM config
+      const requestBody = {
+        frog_id: this.currentFrog.id,
+        frog_stats: this.currentFrog.stats
+      };
+      
+      // Include LLM config if available
+      const llmConfig = this.getLLMConfig();
+      if (llmConfig) {
+        requestBody.llm_config = llmConfig;
+      }
+      
       const response = await fetch('/api/adventure/start', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          frog_id: this.currentFrog.id,
-          frog_stats: this.currentFrog.stats
-        })
+        body: JSON.stringify(requestBody)
       });
       
       const result = await response.json();
@@ -226,15 +247,24 @@ class GameUI {
     });
     
     try {
+      // Prepare request body with LLM config
+      const requestBody = {
+        scenario_id: this.currentScenario?.id,
+        choice: { id: choiceId, risk: 'medium' },
+        frog_stats: this.currentFrog?.stats || {}
+      };
+      
+      // Include LLM config if available
+      const llmConfig = this.getLLMConfig();
+      if (llmConfig) {
+        requestBody.llm_config = llmConfig;
+      }
+      
       // Make real API call to process choice
       const response = await fetch('/api/adventure/choice', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          scenario_id: this.currentScenario?.id,
-          choice: { id: choiceId, risk: 'medium' },
-          frog_stats: this.currentFrog?.stats || {}
-        })
+        body: JSON.stringify(requestBody)
       });
       
       const result = await response.json();

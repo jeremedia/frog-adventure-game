@@ -1,0 +1,503 @@
+<div class="config-container">
+  <h1>🛠️ Configuration</h1>
+  <p>Configure your LLM provider to power the AI-generated content in Frog Adventure.</p>
+  
+  <div class="config-form">
+    <h2>LLM Provider Settings</h2>
+    
+    <div class="form-group">
+      <label for="provider-select">Select Provider:</label>
+      <select id="provider-select" class="form-select">
+        <option value="">-- Select a provider --</option>
+        <option value="ollama">Ollama (Local)</option>
+        <option value="openai">OpenAI</option>
+        <option value="anthropic">Anthropic</option>
+        <option value="gemini">Google Gemini</option>
+        <option value="deepseek">DeepSeek</option>
+        <option value="openrouter">OpenRouter</option>
+        <option value="bedrock">AWS Bedrock</option>
+      </select>
+    </div>
+    
+    <div id="provider-settings" class="provider-settings hidden">
+      <!-- Dynamic settings will be inserted here based on provider selection -->
+    </div>
+    
+    <div class="form-actions">
+      <button id="test-config" class="btn btn-secondary" disabled>Test Configuration</button>
+      <button id="save-config" class="btn btn-primary" disabled>Save Configuration</button>
+      <button id="clear-config" class="btn btn-danger">Clear All Settings</button>
+    </div>
+    
+    <div id="test-result" class="test-result hidden">
+      <!-- Test results will appear here -->
+    </div>
+  </div>
+  
+  <div class="config-info">
+    <h3>ℹ️ Provider Information</h3>
+    <div id="provider-info" class="info-box">
+      <p>Select a provider above to see configuration instructions.</p>
+    </div>
+  </div>
+  
+  <div class="navigation">
+    <a href="/" class="btn btn-secondary">← Back to Home</a>
+  </div>
+</div>
+
+<script>
+// Configuration management
+const ConfigManager = {
+  providers: {
+    ollama: {
+      name: 'Ollama (Local)',
+      fields: [
+        { id: 'api_base', label: 'API Base URL', type: 'text', default: 'http://localhost:11434', required: true },
+        { id: 'model', label: 'Model Name', type: 'text', default: 'gemma3n:e4b', required: true }
+      ],
+      info: 'Ollama runs AI models locally on your machine. Make sure Ollama is installed and running before using this provider. Visit <a href="https://ollama.ai" target="_blank">ollama.ai</a> to install.'
+    },
+    openai: {
+      name: 'OpenAI',
+      fields: [
+        { id: 'api_key', label: 'API Key', type: 'password', required: true },
+        { id: 'api_base', label: 'API Base URL (optional)', type: 'text', placeholder: 'For Azure or custom endpoints' },
+        { id: 'organization_id', label: 'Organization ID (optional)', type: 'text' },
+        { id: 'project_id', label: 'Project ID (optional)', type: 'text' }
+      ],
+      info: 'OpenAI provides powerful language models like GPT-4. Get your API key from <a href="https://platform.openai.com/api-keys" target="_blank">platform.openai.com</a>.'
+    },
+    anthropic: {
+      name: 'Anthropic',
+      fields: [
+        { id: 'api_key', label: 'API Key', type: 'password', required: true }
+      ],
+      info: 'Anthropic creates Claude, a helpful and harmless AI assistant. Get your API key from <a href="https://console.anthropic.com" target="_blank">console.anthropic.com</a>.'
+    },
+    gemini: {
+      name: 'Google Gemini',
+      fields: [
+        { id: 'api_key', label: 'API Key', type: 'password', required: true }
+      ],
+      info: 'Google Gemini provides advanced AI capabilities. Get your API key from <a href="https://makersuite.google.com/app/apikey" target="_blank">Google AI Studio</a>.'
+    },
+    deepseek: {
+      name: 'DeepSeek',
+      fields: [
+        { id: 'api_key', label: 'API Key', type: 'password', required: true }
+      ],
+      info: 'DeepSeek offers efficient language models. Visit <a href="https://platform.deepseek.com" target="_blank">platform.deepseek.com</a> for API access.'
+    },
+    openrouter: {
+      name: 'OpenRouter',
+      fields: [
+        { id: 'api_key', label: 'API Key', type: 'password', required: true }
+      ],
+      info: 'OpenRouter provides access to multiple AI models through a unified API. Get your key from <a href="https://openrouter.ai" target="_blank">openrouter.ai</a>.'
+    },
+    bedrock: {
+      name: 'AWS Bedrock',
+      fields: [
+        { id: 'api_key', label: 'Access Key ID', type: 'password', required: true },
+        { id: 'secret_key', label: 'Secret Access Key', type: 'password', required: true },
+        { id: 'region', label: 'AWS Region', type: 'text', default: 'us-east-1', required: true },
+        { id: 'session_token', label: 'Session Token (optional)', type: 'password' }
+      ],
+      info: 'AWS Bedrock provides access to foundation models. Configure AWS credentials from your <a href="https://console.aws.amazon.com/iam" target="_blank">AWS IAM console</a>.'
+    }
+  },
+  
+  init() {
+    this.loadSavedConfig();
+    this.bindEvents();
+  },
+  
+  bindEvents() {
+    document.getElementById('provider-select').addEventListener('change', (e) => {
+      this.onProviderChange(e.target.value);
+    });
+    
+    document.getElementById('test-config').addEventListener('click', () => {
+      this.testConfiguration();
+    });
+    
+    document.getElementById('save-config').addEventListener('click', () => {
+      this.saveConfiguration();
+    });
+    
+    document.getElementById('clear-config').addEventListener('click', () => {
+      this.clearConfiguration();
+    });
+  },
+  
+  loadSavedConfig() {
+    const savedConfig = localStorage.getItem('frog_adventure_llm_config');
+    if (savedConfig) {
+      try {
+        const config = JSON.parse(savedConfig);
+        document.getElementById('provider-select').value = config.provider;
+        this.onProviderChange(config.provider);
+        
+        // Fill in saved values
+        setTimeout(() => {
+          for (const [key, value] of Object.entries(config.settings)) {
+            const input = document.getElementById(`field-${key}`);
+            if (input) {
+              input.value = value;
+            }
+          }
+        }, 100);
+      } catch (e) {
+        console.error('Failed to load saved config:', e);
+      }
+    }
+  },
+  
+  onProviderChange(provider) {
+    const settingsDiv = document.getElementById('provider-settings');
+    const infoDiv = document.getElementById('provider-info');
+    const testBtn = document.getElementById('test-config');
+    const saveBtn = document.getElementById('save-config');
+    
+    if (!provider || !this.providers[provider]) {
+      settingsDiv.classList.add('hidden');
+      testBtn.disabled = true;
+      saveBtn.disabled = true;
+      infoDiv.innerHTML = '<p>Select a provider above to see configuration instructions.</p>';
+      return;
+    }
+    
+    const providerConfig = this.providers[provider];
+    
+    // Update info
+    infoDiv.innerHTML = `<p>${providerConfig.info}</p>`;
+    
+    // Build settings form
+    let html = `<h3>${providerConfig.name} Settings</h3>`;
+    providerConfig.fields.forEach(field => {
+      html += `
+        <div class="form-group">
+          <label for="field-${field.id}">${field.label}${field.required ? ' <span class="required">*</span>' : ''}</label>
+          <input 
+            type="${field.type}" 
+            id="field-${field.id}" 
+            class="form-input" 
+            placeholder="${field.placeholder || ''}"
+            value="${field.default || ''}"
+            ${field.required ? 'required' : ''}
+          >
+        </div>
+      `;
+    });
+    
+    settingsDiv.innerHTML = html;
+    settingsDiv.classList.remove('hidden');
+    testBtn.disabled = false;
+    saveBtn.disabled = false;
+    
+    // Add input validation
+    settingsDiv.querySelectorAll('input').forEach(input => {
+      input.addEventListener('input', () => this.validateForm());
+    });
+  },
+  
+  validateForm() {
+    const provider = document.getElementById('provider-select').value;
+    if (!provider) return false;
+    
+    const providerConfig = this.providers[provider];
+    let isValid = true;
+    
+    providerConfig.fields.forEach(field => {
+      if (field.required) {
+        const input = document.getElementById(`field-${field.id}`);
+        if (!input || !input.value.trim()) {
+          isValid = false;
+        }
+      }
+    });
+    
+    document.getElementById('test-config').disabled = !isValid;
+    document.getElementById('save-config').disabled = !isValid;
+    
+    return isValid;
+  },
+  
+  getFormData() {
+    const provider = document.getElementById('provider-select').value;
+    if (!provider) return null;
+    
+    const providerConfig = this.providers[provider];
+    const settings = {};
+    
+    providerConfig.fields.forEach(field => {
+      const input = document.getElementById(`field-${field.id}`);
+      if (input && input.value.trim()) {
+        settings[field.id] = input.value.trim();
+      }
+    });
+    
+    return { provider, settings };
+  },
+  
+  async testConfiguration() {
+    const config = this.getFormData();
+    if (!config) return;
+    
+    const testBtn = document.getElementById('test-config');
+    const resultDiv = document.getElementById('test-result');
+    
+    testBtn.disabled = true;
+    testBtn.textContent = 'Testing...';
+    
+    try {
+      const response = await fetch('/api/config/test', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(config)
+      });
+      
+      const result = await response.json();
+      
+      if (result.status === 'success') {
+        resultDiv.innerHTML = `
+          <div class="alert alert-success">
+            <strong>✅ Success!</strong> Configuration is valid.
+            <div class="test-response">${result.response || 'Connection successful'}</div>
+          </div>
+        `;
+      } else {
+        resultDiv.innerHTML = `
+          <div class="alert alert-error">
+            <strong>❌ Error:</strong> ${result.message || 'Configuration test failed'}
+          </div>
+        `;
+      }
+      
+      resultDiv.classList.remove('hidden');
+    } catch (error) {
+      resultDiv.innerHTML = `
+        <div class="alert alert-error">
+          <strong>❌ Error:</strong> Failed to test configuration: ${error.message}
+        </div>
+      `;
+      resultDiv.classList.remove('hidden');
+    } finally {
+      testBtn.disabled = false;
+      testBtn.textContent = 'Test Configuration';
+      this.validateForm();
+    }
+  },
+  
+  saveConfiguration() {
+    const config = this.getFormData();
+    if (!config) return;
+    
+    try {
+      localStorage.setItem('frog_adventure_llm_config', JSON.stringify(config));
+      
+      const resultDiv = document.getElementById('test-result');
+      resultDiv.innerHTML = `
+        <div class="alert alert-success">
+          <strong>✅ Saved!</strong> Configuration has been saved to local storage.
+        </div>
+      `;
+      resultDiv.classList.remove('hidden');
+      
+      // Auto-hide success message after 3 seconds
+      setTimeout(() => {
+        resultDiv.classList.add('hidden');
+      }, 3000);
+    } catch (error) {
+      alert('Failed to save configuration: ' + error.message);
+    }
+  },
+  
+  clearConfiguration() {
+    if (confirm('Are you sure you want to clear all LLM configuration settings?')) {
+      localStorage.removeItem('frog_adventure_llm_config');
+      document.getElementById('provider-select').value = '';
+      document.getElementById('provider-settings').classList.add('hidden');
+      document.getElementById('test-result').classList.add('hidden');
+      document.getElementById('test-config').disabled = true;
+      document.getElementById('save-config').disabled = true;
+      
+      const infoDiv = document.getElementById('provider-info');
+      infoDiv.innerHTML = '<p>Select a provider above to see configuration instructions.</p>';
+    }
+  }
+};
+
+// Initialize when DOM is ready
+document.addEventListener('DOMContentLoaded', () => {
+  ConfigManager.init();
+});
+</script>
+
+<style>
+.config-container {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+.config-form {
+  background: #f8f9fa;
+  border-radius: 8px;
+  padding: 24px;
+  margin: 20px 0;
+}
+
+.form-group {
+  margin-bottom: 16px;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 4px;
+  font-weight: 600;
+  color: #333;
+}
+
+.form-select, .form-input {
+  width: 100%;
+  padding: 8px 12px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 16px;
+}
+
+.form-select:focus, .form-input:focus {
+  outline: none;
+  border-color: #4CAF50;
+  box-shadow: 0 0 0 2px rgba(76, 175, 80, 0.2);
+}
+
+.required {
+  color: #e74c3c;
+}
+
+.provider-settings {
+  margin-top: 20px;
+  padding-top: 20px;
+  border-top: 1px solid #ddd;
+}
+
+.provider-settings h3 {
+  margin-bottom: 16px;
+  color: #2c3e50;
+}
+
+.form-actions {
+  margin-top: 24px;
+  display: flex;
+  gap: 12px;
+}
+
+.btn {
+  padding: 10px 20px;
+  border: none;
+  border-radius: 4px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.btn-primary {
+  background: #4CAF50;
+  color: white;
+}
+
+.btn-primary:hover:not(:disabled) {
+  background: #45a049;
+}
+
+.btn-secondary {
+  background: #6c757d;
+  color: white;
+}
+
+.btn-secondary:hover:not(:disabled) {
+  background: #5a6268;
+}
+
+.btn-danger {
+  background: #e74c3c;
+  color: white;
+}
+
+.btn-danger:hover:not(:disabled) {
+  background: #c0392b;
+}
+
+.test-result {
+  margin-top: 20px;
+}
+
+.alert {
+  padding: 12px 16px;
+  border-radius: 4px;
+  margin-bottom: 16px;
+}
+
+.alert-success {
+  background: #d4edda;
+  color: #155724;
+  border: 1px solid #c3e6cb;
+}
+
+.alert-error {
+  background: #f8d7da;
+  color: #721c24;
+  border: 1px solid #f5c6cb;
+}
+
+.test-response {
+  margin-top: 8px;
+  padding: 8px;
+  background: rgba(255, 255, 255, 0.5);
+  border-radius: 4px;
+  font-style: italic;
+}
+
+.config-info {
+  background: #e8f4f8;
+  border-radius: 8px;
+  padding: 20px;
+  margin: 20px 0;
+}
+
+.config-info h3 {
+  margin-bottom: 12px;
+  color: #2c3e50;
+}
+
+.info-box {
+  color: #555;
+  line-height: 1.6;
+}
+
+.info-box a {
+  color: #4CAF50;
+  text-decoration: none;
+}
+
+.info-box a:hover {
+  text-decoration: underline;
+}
+
+.navigation {
+  margin-top: 30px;
+  text-align: center;
+}
+
+.hidden {
+  display: none;
+}
+</style>

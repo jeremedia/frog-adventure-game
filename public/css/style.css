@@ -536,3 +536,24 @@ body {
   font-size: 0.95rem;
   line-height: 1.5;
 }
+
+/* Config Link */
+.quick-links {
+  text-align: right;
+  margin: -10px 0 10px 0;
+}
+
+.config-link {
+  display: inline-block;
+  padding: 8px 16px;
+  background: #6c757d;
+  color: white;
+  text-decoration: none;
+  border-radius: 4px;
+  font-size: 14px;
+  transition: background 0.2s;
+}
+
+.config-link:hover {
+  background: #5a6268;
+}

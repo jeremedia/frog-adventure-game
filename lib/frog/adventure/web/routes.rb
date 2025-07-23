@@ -24,6 +24,11 @@ module Frog
               erb :how_to_play
             end
             
+            get "/config" do
+              @title = "Configuration"
+              erb :config
+            end
+            
             # Game page (main game UI)
             get "/game" do
               @title = "Frog Adventure - Game"
@@ -172,10 +177,18 @@ module Frog
                   content_type :json
                   
                   begin
-                    # Use LLM to generate unique frog
-                    llm_client = Frog::Adventure::Web::LLMClient.new
+                    # Parse request data including LLM config
                     request_data = JSON.parse(request.body.read) rescue {}
                     frog_type = request_data["frog_type"] || nil
+                    llm_config = request_data["llm_config"] || {}
+                    
+                    # Configure LLM if config provided
+                    if llm_config["provider"]
+                      configure_llm_provider(llm_config["provider"], llm_config["settings"] || {})
+                    end
+                    
+                    # Use LLM to generate unique frog
+                    llm_client = Frog::Adventure::Web::LLMClient.new
                     
                     # Generate frog using LLM
                     generated_frog = llm_client.generate_frog(frog_type: frog_type)
@@ -239,10 +252,18 @@ module Frog
                   content_type :json
                   
                   begin
-                    # Use LLM to generate adventure scenario
-                    llm_client = Frog::Adventure::Web::LLMClient.new
+                    # Parse request data including LLM config
                     request_data = JSON.parse(request.body.read) rescue {}
                     frog_stats = request_data["frog_stats"] || {}
+                    llm_config = request_data["llm_config"] || {}
+                    
+                    # Configure LLM if config provided
+                    if llm_config["provider"]
+                      configure_llm_provider(llm_config["provider"], llm_config["settings"] || {})
+                    end
+                    
+                    # Use LLM to generate adventure scenario
+                    llm_client = Frog::Adventure::Web::LLMClient.new
                     
                     scenario = llm_client.generate_adventure_scenario(frog_stats: frog_stats)
                     
@@ -329,6 +350,12 @@ module Frog
                     choice = choice_params["choice"] || {}
                     scenario_id = choice_params["scenario_id"]
                     frog_stats = choice_params["frog_stats"] || {}
+                    llm_config = choice_params["llm_config"] || {}
+                    
+                    # Configure LLM if config provided
+                    if llm_config["provider"]
+                      configure_llm_provider(llm_config["provider"], llm_config["settings"] || {})
+                    end
                     
                     # Use LLM to generate contextual outcome
                     llm_client = Frog::Adventure::Web::LLMClient.new
@@ -372,6 +399,40 @@ module Frog
                     puts "Choice processing error: #{e.message}"
                     status 500
                     { status: "error", message: "Failed to process choice" }.to_json
+                  end
+                end
+              end
+              
+              # Configuration routes
+              namespace "/config" do
+                # Test LLM configuration
+                post "/test" do
+                  content_type :json
+                  
+                  begin
+                    config_params = JSON.parse(request.body.read)
+                    provider = config_params["provider"]
+                    settings = config_params["settings"] || {}
+                    
+                    # Test the configuration by attempting to generate a simple response
+                    test_result = test_llm_configuration(provider, settings)
+                    
+                    if test_result[:success]
+                      { 
+                        status: "success", 
+                        message: "LLM configuration is valid",
+                        response: test_result[:response]
+                      }.to_json
+                    else
+                      status 400
+                      { 
+                        status: "error", 
+                        message: test_result[:error] || "Configuration test failed"
+                      }.to_json
+                    end
+                  rescue => e
+                    status 500
+                    { status: "error", message: e.message }.to_json
                   end
                 end
               end
@@ -463,6 +524,95 @@ module Frog
               def fetch_player_games(player_id)
                 # TODO: Implement player games fetching
                 []
+              end
+              
+              def test_llm_configuration(provider, settings)
+                begin
+                  # Configure RubyLLM with the provided settings
+                  configure_llm_provider(provider, settings)
+                  
+                  # Simple test prompt
+                  test_prompt = "Say 'Hello, Frog Adventure!' in a fun way."
+                  
+                  # Try to query the LLM
+                  llm_client = Frog::Adventure::Web::LLMClient.new
+                  response = llm_client.send(:query_llm, test_prompt)
+                  
+                  if response && response.length > 0
+                    { success: true, response: response }
+                  else
+                    { success: false, error: "Empty response from LLM" }
+                  end
+                rescue => e
+                  { success: false, error: e.message }
+                end
+              end
+              
+              def log_debug(component, message)
+                timestamp = Time.now.strftime("%Y-%m-%d %H:%M:%S")
+                log_message = "[#{timestamp}] #{component.upcase} | #{message}"
+                puts log_message
+                
+                begin
+                  File.open("server.log", "a") do |file|
+                    file.puts log_message
+                  end
+                rescue => e
+                  puts "Failed to write to log file: #{e.message}"
+                end
+              end
+              
+              def configure_llm_provider(provider, settings)
+                log_debug("CONFIG", "Configuring provider: #{provider} with settings: #{settings.keys.join(', ')}")
+                
+                # Clear existing environment variables
+                ENV.delete('OLLAMA_API_BASE')
+                ENV.delete('LLM_PROVIDER')
+                ENV.delete('OLLAMA_MODEL')
+                ENV.delete('OPENAI_API_KEY')
+                ENV.delete('ANTHROPIC_API_KEY')
+                ENV.delete('GEMINI_API_KEY')
+                ENV.delete('DEEPSEEK_API_KEY')
+                ENV.delete('OPENROUTER_API_KEY')
+                ENV.delete('BEDROCK_API_KEY')
+                ENV.delete('BEDROCK_SECRET_KEY')
+                ENV.delete('BEDROCK_REGION')
+                
+                # Set provider-specific configuration
+                case provider
+                when 'ollama'
+                  ENV['LLM_PROVIDER'] = 'ollama'
+                  ENV['OLLAMA_API_BASE'] = settings['api_base'] || 'http://localhost:11434'
+                  ENV['OLLAMA_MODEL'] = settings['model'] || 'gemma3n:e4b'
+                when 'openai'
+                  ENV['LLM_PROVIDER'] = 'openai'
+                  ENV['OPENAI_API_KEY'] = settings['api_key']
+                  ENV['OPENAI_API_BASE'] = settings['api_base'] if settings['api_base']
+                  ENV['OPENAI_ORGANIZATION_ID'] = settings['organization_id'] if settings['organization_id']
+                  ENV['OPENAI_PROJECT_ID'] = settings['project_id'] if settings['project_id']
+                when 'anthropic'
+                  ENV['LLM_PROVIDER'] = 'anthropic'
+                  ENV['ANTHROPIC_API_KEY'] = settings['api_key']
+                when 'gemini'
+                  ENV['LLM_PROVIDER'] = 'gemini'
+                  ENV['GEMINI_API_KEY'] = settings['api_key']
+                when 'deepseek'
+                  ENV['LLM_PROVIDER'] = 'deepseek'
+                  ENV['DEEPSEEK_API_KEY'] = settings['api_key']
+                when 'openrouter'
+                  ENV['LLM_PROVIDER'] = 'openrouter'
+                  ENV['OPENROUTER_API_KEY'] = settings['api_key']
+                when 'bedrock'
+                  ENV['LLM_PROVIDER'] = 'bedrock'
+                  ENV['BEDROCK_API_KEY'] = settings['api_key']
+                  ENV['BEDROCK_SECRET_KEY'] = settings['secret_key']
+                  ENV['BEDROCK_REGION'] = settings['region']
+                  ENV['BEDROCK_SESSION_TOKEN'] = settings['session_token'] if settings['session_token']
+                else
+                  raise "Unsupported provider: #{provider}"
+                end
+                
+                log_debug("CONFIG", "Successfully configured #{provider}")
               end
             end
           end

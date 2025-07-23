@@ -120,46 +120,109 @@ module Frog
         end
 
         def query_llm(prompt)
-          # Use RubyLLM to query Ollama
+          # Check which provider is configured
+          provider = ENV['LLM_PROVIDER'] || 'ollama'
+          
+          log_llm_request(provider, prompt)
+          
           begin
-            # puts "DEBUG: Querying LLM with prompt length: #{prompt.length}"
+            start_time = Time.now
             
-            # Direct call to Ollama API since RubyLLM might not support it properly
-            require 'net/http'
-            require 'json'
-            
-            uri = URI("http://localhost:11434/api/generate")
-            request = Net::HTTP::Post.new(uri)
-            request['Content-Type'] = 'application/json'
-            request.body = {
-              model: 'gemma3n:e4b',
-              prompt: prompt,
-              stream: false,
-              temperature: 0.8
-            }.to_json
-            
-            # puts "DEBUG: Sending request to Ollama..."
-            response = Net::HTTP.start(uri.hostname, uri.port) do |http|
-              http.read_timeout = 30
-              http.request(request)
-            end
-            
-            # puts "DEBUG: Got response from Ollama: #{response.code}"
-            
-            if response.code == '200'
-              result = JSON.parse(response.body)
-              generated_text = result['response'].strip
-              # puts "DEBUG: Generated text (#{generated_text.length} chars)"
-              return generated_text
+            response = case provider
+            when 'ollama'
+              query_ollama(prompt)
+            when 'openai', 'anthropic', 'gemini', 'deepseek', 'openrouter', 'bedrock'
+              query_rubyllm(prompt)
             else
-              raise "Ollama API error: #{response.code} - #{response.body}"
+              raise "Unsupported LLM provider: #{provider}"
             end
+            
+            duration = Time.now - start_time
+            log_llm_response(provider, response, duration, true)
+            
+            response
           rescue => e
+            duration = Time.now - start_time
+            log_llm_error(provider, e, duration)
+            
             # Fallback to mock data if LLM fails
             puts "LLM call failed: #{e.class} - #{e.message}"
             puts "Backtrace: #{e.backtrace.first(3).join("\n")}"
             puts "Using fallback data..."
-            return generate_mock_response(prompt)
+            
+            fallback_response = generate_mock_response(prompt)
+            log_llm_response(provider, fallback_response, duration, false, "Using fallback data")
+            
+            return fallback_response
+          end
+        end
+        
+        def query_ollama(prompt)
+          require 'net/http'
+          require 'json'
+          
+          api_base = ENV['OLLAMA_API_BASE'] || "http://localhost:11434"
+          model = ENV['OLLAMA_MODEL'] || 'gemma3n:e4b'
+          
+          log_debug("Ollama", "Making request to #{api_base} with model #{model}")
+          
+          uri = URI("#{api_base}/api/generate")
+          request = Net::HTTP::Post.new(uri)
+          request['Content-Type'] = 'application/json'
+          request.body = {
+            model: model,
+            prompt: prompt,
+            stream: false,
+            temperature: 0.8
+          }.to_json
+          
+          response = Net::HTTP.start(uri.hostname, uri.port) do |http|
+            http.read_timeout = 30
+            http.request(request)
+          end
+          
+          log_debug("Ollama", "Response status: #{response.code}")
+          
+          if response.code == '200'
+            result = JSON.parse(response.body)
+            generated_text = result['response'].strip
+            log_debug("Ollama", "Generated #{generated_text.length} characters")
+            generated_text
+          else
+            error_msg = "Ollama API error: #{response.code} - #{response.body}"
+            log_debug("Ollama", error_msg)
+            raise error_msg
+          end
+        end
+        
+        def query_rubyllm(prompt)
+          # Use RubyLLM for other providers
+          require 'ruby_llm'
+          
+          provider = ENV['LLM_PROVIDER']
+          log_debug("RubyLLM", "Using provider: #{provider}")
+          
+          # RubyLLM will use the environment variables to configure itself
+          client = RubyLLM::Client.new
+          
+          log_debug("RubyLLM", "Sending chat request")
+          
+          response = client.chat(
+            messages: [{ role: "user", content: prompt }],
+            temperature: 0.8
+          )
+          
+          log_debug("RubyLLM", "Response received: #{response.class}")
+          
+          # Extract the response content
+          if response && response['choices'] && response['choices'][0]
+            content = response['choices'][0]['message']['content'].strip
+            log_debug("RubyLLM", "Generated #{content.length} characters")
+            content
+          else
+            error_msg = "Invalid response from RubyLLM: #{response.inspect}"
+            log_debug("RubyLLM", error_msg)
+            raise error_msg
           end
         end
 
@@ -493,6 +556,67 @@ module Frog
           result[:scenario_id] = scenario_id
           result[:choice_made] = choice
           OpenStruct.new(result)
+        end
+        
+        # Logging methods
+        def log_llm_request(provider, prompt)
+          timestamp = Time.now.strftime("%Y-%m-%d %H:%M:%S")
+          prompt_preview = prompt.length > 100 ? "#{prompt[0..100]}..." : prompt
+          
+          log_message = "[#{timestamp}] LLM REQUEST: #{provider.upcase} | " \
+                       "Prompt length: #{prompt.length} chars | " \
+                       "Preview: #{prompt_preview.gsub(/\n/, ' ')}"
+          
+          puts log_message
+          write_to_log_file(log_message)
+        end
+        
+        def log_llm_response(provider, response, duration, success, note = nil)
+          timestamp = Time.now.strftime("%Y-%m-%d %H:%M:%S")
+          status = success ? "SUCCESS" : "FALLBACK"
+          response_preview = response.length > 200 ? "#{response[0..200]}..." : response
+          
+          log_message = "[#{timestamp}] LLM RESPONSE: #{provider.upcase} | " \
+                       "Status: #{status} | " \
+                       "Duration: #{'%.2f' % duration}s | " \
+                       "Response length: #{response.length} chars"
+          
+          log_message += " | Note: #{note}" if note
+          log_message += " | Preview: #{response_preview.gsub(/\n/, ' ')}"
+          
+          puts log_message
+          write_to_log_file(log_message)
+        end
+        
+        def log_llm_error(provider, error, duration)
+          timestamp = Time.now.strftime("%Y-%m-%d %H:%M:%S")
+          
+          log_message = "[#{timestamp}] LLM ERROR: #{provider.upcase} | " \
+                       "Duration: #{'%.2f' % duration}s | " \
+                       "Error: #{error.class} - #{error.message}"
+          
+          puts log_message
+          write_to_log_file(log_message)
+        end
+        
+        def log_debug(provider, message)
+          timestamp = Time.now.strftime("%Y-%m-%d %H:%M:%S")
+          
+          log_message = "[#{timestamp}] LLM DEBUG: #{provider.upcase} | #{message}"
+          
+          puts log_message
+          write_to_log_file(log_message)
+        end
+        
+        def write_to_log_file(message)
+          begin
+            File.open("server.log", "a") do |file|
+              file.puts message
+            end
+          rescue => e
+            # Silently fail if we can't write to log file
+            puts "Failed to write to log file: #{e.message}"
+          end
         end
       end
     end
