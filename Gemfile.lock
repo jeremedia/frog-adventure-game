@@ -4,7 +4,7 @@ PATH
     frog-adventure-web (0.1.0)
       dotenv (~> 3.1)
       json (~> 2.7)
-      puma (~> 6.4)
+      puma (>= 6.4, < 8.0)
       rack-cors (~> 2.0)
       rack-request-id (~> 0.0.4)
       rackup (~> 2.1)
@@ -63,7 +63,7 @@ GEM
     psych (5.2.6)
       date
       stringio
-    puma (6.6.0)
+    puma (7.0.1)
       nio4r (~> 2.0)
     racc (1.8.1)
     rack (3.1.16)
