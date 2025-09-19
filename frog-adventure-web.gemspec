@@ -42,7 +42,7 @@ Gem::Specification.new do |spec|
   spec.add_dependency "redis", "~> 5.0"
   spec.add_dependency "json", "~> 2.7"
   spec.add_dependency "dotenv", "~> 3.1"
-  spec.add_dependency "rack-cors", "~> 2.0"
+  spec.add_dependency "rack-cors", ">= 2", "< 4"
   spec.add_dependency "rack-request-id", "~> 0.0.4"
 
   # Development dependencies
