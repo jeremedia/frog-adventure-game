@@ -82,7 +82,7 @@ GEM
     rackup (2.2.1)
       rack (>= 3)
     rainbow (3.1.1)
-    rake (13.3.0)
+    rake (13.3.1)
     rdoc (6.14.2)
       erb
       psych (>= 4.0.0)
@@ -167,7 +167,7 @@ DEPENDENCIES
   frog-adventure-web!
   irb
   rack-test (~> 2.1)
-  rake (~> 13.0)
+  rake (~> 13.3)
   rspec (~> 3.13)
   rubocop (~> 1.65)
   simplecov (~> 0.22)
